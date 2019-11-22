@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GameContent\Dialog\Bribe.cs" />
+    <Compile Include="GameContent\Faction.cs" />
     <Compile Include="GameContent\Inventory.cs" />
     <Compile Include="GameContent\Item.cs" />
     <Compile Include="GameContent\Items\Armor.cs" />
@@ -54,6 +55,7 @@
     <Compile Include="GameContent\Items\Armors\Greaves.cs" />
     <Compile Include="GameContent\Items\Armors\Helmet.cs" />
     <Compile Include="GameContent\Items\Weapon.cs" />
+    <Compile Include="GameContent\Items\Weapons\Mace.cs" />
     <Compile Include="GameContent\Items\Weapons\Sword.cs" />
     <Compile Include="GameContent\NPC.cs" />
     <Compile Include="GameContent\Player.cs" />

@@ -15,27 +15,27 @@ namespace STory.GameContent
         public float health;
         public Boolean alive = true;
         public string name;
-        
+        public Faction faction;
         public Inventory inventory = new Inventory();
         Weapon weapon;
 
         public NPC() { }
-        public NPC(string name)
+        public NPC(string name, Faction f):this(name,
+            new Helmet(0.02f, 0.02f, 0.02f, 5, 10, "Leather Helmet"),
+            new Cuirass(0.02f, 0.02f, 0.02f, 5, 10, "Leather Cuirass"),
+            new Gloves(0.02f, 0.02f, 0.02f, 5, 10, "Leather Gloves"),
+            new Greaves(0.02f, 0.02f, 0.02f, 5, 10, "Leather Greaves"),
+            new Boots(0.02f, 0.02f, 0.02f, 5, 10, "Leather Boots"),
+            new Weapon(10, DamageType.Slash, 10, 10, "sword name", "Sword"),
+            f
+            )
+        {
+
+        }
+        public NPC(string name, Helmet h, Cuirass c, Gloves g, Greaves gg, Boots b, Weapon w, Faction f)
         {
             this.name = name;
             this.health = 100;
-
-            inventory.Equip(new Helmet( 0.02f, 0.02f, 0.02f, 5, 10, "Leather Helmet"));
-            inventory.Equip(new Cuirass(0.02f, 0.02f, 0.02f, 5, 10, "Leather Cuirass"));
-            inventory.Equip(new Gloves( 0.02f, 0.02f, 0.02f, 5, 10, "Leather Gloves"));
-            inventory.Equip(new Greaves(0.02f, 0.02f, 0.02f, 5, 10, "Leather Greaves"));
-            inventory.Equip(new Boots(  0.02f, 0.02f, 0.02f, 5, 10, "Leather Boots"));
-            equipWeapon(new Weapon(10, DamageType.Slash, 10, 10, "sword name", "Sword"));
-
-
-        }
-        public NPC(Helmet h, Cuirass c, Gloves g, Greaves gg, Boots b, Weapon w)
-        {
             void equip(Armor a)
             {
                 if (a != null)
@@ -48,7 +48,7 @@ namespace STory.GameContent
             {
                 equipWeapon(w);
             }
-
+            this.faction = f;
 
         }
         private void equipWeapon(Weapon w)

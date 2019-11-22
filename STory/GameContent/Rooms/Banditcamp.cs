@@ -11,7 +11,7 @@ namespace STory.GameContent.Rooms
 {
     class Banditcamp : Room
     {
-        NPC bandit = new NPC("bandit");
+        NPC bandit = new NPC("bandit", Faction.bandits);
 
         public Banditcamp()
         {
@@ -23,7 +23,7 @@ namespace STory.GameContent.Rooms
         {
             Random r = new Random();
             double d = r.NextDouble();
-            if (true)//d > 0.1
+            if (d > 0.1)//
             {
                 CIO.Print("you have been brutally slaughtered.");
                 Program.gameOver();
