@@ -39,6 +39,7 @@ namespace STory
         {
             currentRoom = Rooms[typeof(GameContent.Rooms.Forest_start)];
             throw new Exception("");
+            //testcommit
         }
 
         static void Main(string[] args)
