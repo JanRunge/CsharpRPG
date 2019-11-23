@@ -39,7 +39,7 @@ namespace STory.GameContent.Items
             return l;
         }
 
-        public string getText()//for fights
+        public override string getText()//for fights
         {
             return this.name + " (" + this.damage + " " + this.damagetype.description + "damage)";
         }

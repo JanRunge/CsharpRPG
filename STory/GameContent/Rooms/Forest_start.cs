@@ -15,14 +15,11 @@ namespace STory.GameContent.Rooms
         }
         public override bool OnEnter()
         {
-            
             AddRoom(typeof(Town));
-            // AddRoom(typeof(Cave));
+            //AddRoom(typeof(Cave));
             AddRoom(typeof(Banditcamp));
             base.OnEnter();
             return true;
-            
-
         }
         
         public override void OnExit()

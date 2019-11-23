@@ -31,7 +31,7 @@ namespace STory
             return s;
         }
 
-        public string getText()
+        public virtual string getText()
         {
             return this.name+ " " + weight + "kg " + worth + "g";
         }

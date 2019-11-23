@@ -13,7 +13,7 @@ namespace STory
         protected ConsoleColor? color = null;
         protected string notavailableMessage;
 
-        protected Func<bool> available;//todo: make this an action
+        protected Func<bool> available;
         
         protected List<Action> OnExecution;
         protected List<Action> OnTry;
