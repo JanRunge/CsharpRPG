@@ -18,7 +18,6 @@ namespace STory.GameContent
         public Items.Weapon Weapon;
 
 
-        private Dictionary<DamageType, float> Damagemultiplicator = new Dictionary<DamageType, float> { { DamageType.Blunt, 1.6f} };
         public float health = 100;
         public int Intelligence = 20;
         public int Strength = 20;
@@ -26,11 +25,14 @@ namespace STory.GameContent
         public Inventory inventory = new Inventory();
         public float getDamageMultiplicator(DamageType type)
         {
-            if (Damagemultiplicator.ContainsKey(type))
+            if (type.isStrengthBased())
             {
-                return Damagemultiplicator[type];
+                return 1+(0.01f * (Strength - 20));
             }
-            return 1;
+            else
+            {
+                return 1+(0.01f * (Intelligence - 20));
+            }
         }
         public Player(){
             STory.GameContent.Items.Weapon w = new STory.GameContent.Items.Weapon(0,DamageType.Blunt,0,1,"Fists","Fists");
