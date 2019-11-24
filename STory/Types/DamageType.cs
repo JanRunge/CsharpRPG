@@ -25,7 +25,6 @@ namespace STory.Types
         {
             return !strengthbased;
         }
-        //todo make this strings
         public static DamageType Blunt = new DamageType("Blunt",true);
         public static DamageType Slash = new DamageType("Slash",true);
         public static DamageType Poke = new DamageType("Poke",true);

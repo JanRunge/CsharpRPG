@@ -79,5 +79,9 @@ namespace STory.GameContent.Items.Armors
             }
             return returnval;
         }
+        public Armor getItem(Armortype a)
+        {
+            return this.Armors[a];
+        }
     }
 }

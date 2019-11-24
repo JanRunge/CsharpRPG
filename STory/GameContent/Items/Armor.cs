@@ -61,10 +61,13 @@ namespace STory.GameContent.Items
         }
         public override ConsoleColor? GetColor()
         {
-            //todo: change color depending on wether the item is better than the equipped one
             if (equipped)
             {
                 return ConsoleColor.DarkYellow;
+            }
+            else if(this.isBetterThan(Program.player.inventory.GetArmorset().getItem(this.getArmortype())))
+            {
+                return ConsoleColor.Green;
             }
             else
             {
@@ -77,7 +80,14 @@ namespace STory.GameContent.Items
         }
         public Boolean isBetterThan(Armor a)
         {
-            return false; //TODO
+            float sumThis=0;
+            float sumOther=0;
+            foreach(DamageType d in DamageType.allDamageTypes())
+            {
+                sumThis += this.getArmor(d);
+                sumOther += a.getArmor(d);
+            }
+            return sumThis > sumOther;
         }
     }
 }

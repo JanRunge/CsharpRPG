@@ -15,7 +15,6 @@ namespace STory.GameContent
         {
             name = s;
         }
-        //todo make this strings
         public static Faction bandits = new Faction("Bandit");
         public static Faction warriors = new Faction("Warriors");
 

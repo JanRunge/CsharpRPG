@@ -7,7 +7,7 @@ using STory.Handlers.Fight;
 
 namespace STory
 {
-    public class Room : Option
+    public class Room :  Option
     {
         //todo: implement rooms as singletons?
         public string name;
@@ -15,7 +15,8 @@ namespace STory
         public bool thrownToNewRoom = false;
         public List<Attackable> NPCs;
         public List<GenericOption> optionsInRoom = new List<GenericOption>();
-
+        
+        
         public List<Room> nextRooms = new List<Room>();
         public virtual Boolean OnEnter()
         {
