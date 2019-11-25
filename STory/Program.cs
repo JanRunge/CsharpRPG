@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using STory.GameContent;
 using STory.GameContent.Items.Armors;
+using STory.GameContent.Minigames;
 using STory.Types;
 
 namespace STory
@@ -50,7 +51,6 @@ namespace STory
             Rooms = new Dictionary<Type, Room>();
             createStartRoom();
             CIO.initialize();
-            
 
             currentRoom = Rooms[typeof(GameContent.Rooms.Forest_start)];
             while (true)

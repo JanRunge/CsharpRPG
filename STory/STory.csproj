@@ -57,6 +57,8 @@
     <Compile Include="GameContent\Items\Weapon.cs" />
     <Compile Include="GameContent\Items\Weapons\Mace.cs" />
     <Compile Include="GameContent\Items\Weapons\Sword.cs" />
+    <Compile Include="GameContent\Minigames\Dice.cs" />
+    <Compile Include="GameContent\Minigames\Dicegame.cs" />
     <Compile Include="GameContent\NPC.cs" />
     <Compile Include="GameContent\Player.cs" />
     <Compile Include="GameContent\Room.cs" />
