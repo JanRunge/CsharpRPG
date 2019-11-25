@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using STory.GameContent;
 using STory.GameContent.Items;
 using STory.Handlers.Fight;
+using STory.Handlers.IO;
 
 namespace STory.GameContent
 {
@@ -27,14 +28,14 @@ namespace STory.GameContent
         public void startFight()
         {
             //attacks back and forth until someone dies
-            while(Enemy.isAlive()){
+            while (Enemy.isAlive()){
                 Program.player.Weapon = getPlayerWeapon();
                 Attack();
             }
-
             CIO.Print("you defeated " + Enemy.getName());
             Program.player.GiveXP(Enemy.XPOnDeath());
             
+
         }
         public Weapon getPlayerWeapon(){
             Optionhandler oh = new Optionhandler("Choose your weapon");

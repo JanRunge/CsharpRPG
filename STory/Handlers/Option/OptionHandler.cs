@@ -9,7 +9,7 @@ namespace STory
 {
     public class Optionhandler
     {
-        public static GenericOption Exit;
+        public static GenericOption Exit = new GenericOption("Exit", "E");
         Dictionary<string, Option> options = new Dictionary<string, Option>();
         Action generateOptions;
         List<string> preferredCommands = new List<string>();
@@ -26,11 +26,6 @@ namespace STory
         {
             this.text = text;
             this.canExit = canExit;
-            if (canExit)
-            {
-                Exit = new GenericOption("Exit");
-                Exit.setPreferredCommand("E");
-            }
         }
         public Optionhandler(Boolean canExit):this("", canExit)
         {
@@ -94,8 +89,8 @@ namespace STory
                     currentBlocker = options[preferredCommand];
                     options.Remove(preferredCommand);
                     AddOptionWithoutKey(currentBlocker, preferredCommand);
-                    command = preferredCommand;
                 }
+                command = preferredCommand;
             }
             if (command == null) {
                 command = generateCommand(option.getText(), forbiddenKey);
@@ -220,10 +215,7 @@ namespace STory
             }
             CIO.EndContext();
             Option selectedOption = options[userInput];
-            if (GenericOption.isGenericOption(selectedOption))
-            {
-                selectedOption.Select();
-            }
+            selectedOption.Select();
             
 
             return selectedOption;

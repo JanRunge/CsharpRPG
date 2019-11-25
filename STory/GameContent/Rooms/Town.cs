@@ -20,6 +20,7 @@ namespace STory.GameContent.Rooms
             
             AddRoom(typeof(Forest_start));
             AddRoom(typeof(Palast));
+            AddRoom(typeof(Tavern));
             AddRoom(this.LastRoom);
 
 

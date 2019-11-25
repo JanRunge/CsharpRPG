@@ -6,9 +6,13 @@ using System.Threading.Tasks;
 
 namespace STory.GameContent.Minigames
 {
-    class Dicegame
+    class Dicegame :Minigame
     {
-        public void Start(int stake)
+
+        public Dicegame() {
+            this.name = "dicegame";
+        }
+        override public void Play()
         {
             /*
              * wahrscheinlichkeit für 6er pasch: 0,028
@@ -63,9 +67,9 @@ namespace STory.GameContent.Minigames
 
 
         }
-        public void PrintRules()
+        override public void PrintRules()
         {
-
+            CIO.Print("exampleRules");
         }
     }
 }

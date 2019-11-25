@@ -36,6 +36,10 @@ namespace STory
             SetAvailable(available);
             this.color = color;
         }
+        public GenericOption(string name, string preferredcommand) : this(name)
+        {
+            this.setPreferredCommand(preferredcommand);
+        }
 
 
         public void SetAvailable(bool available)
