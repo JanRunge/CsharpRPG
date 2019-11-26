@@ -12,7 +12,7 @@ namespace STory
         public string name;
         protected string preferredCommand;
         protected ConsoleColor? color = null;
-        protected string notavailableMessage;
+        protected Func<string> notavailableMessageAction;
 
         protected Func<bool> available;
         
@@ -132,15 +132,19 @@ namespace STory
             }
             Execute();
         }
+        public void setNotAvailable(Func<string> a)
+        {
+            notavailableMessageAction = a;
+        }
         public virtual void onNotAvailable()
         {
-            if (notavailableMessage == null)
+            if (notavailableMessageAction == null)
             {
-                CIO.Print("not available");
+                CIO.Print("not avaulable");
             }
             else
             {
-                CIO.Print(notavailableMessage);
+                CIO.Print(notavailableMessageAction());
             }
         }
         public virtual void onFailure()

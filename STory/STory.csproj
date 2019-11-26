@@ -75,8 +75,9 @@
     <Compile Include="Handlers\IO\CIO.cs" />
     <Compile Include="Handlers\IO\Context.cs" />
     <Compile Include="Handlers\IO\GlobalCommands.cs" />
+    <Compile Include="Handlers\Option\GenericItemOption.cs" />
     <Compile Include="Handlers\Option\GenericOption.cs" />
-    <Compile Include="Handlers\Option\Mulioption.cs" />
+    <Compile Include="Handlers\Option\Multioption.cs" />
     <Compile Include="Handlers\Option\Option.cs" />
     <Compile Include="Handlers\Option\OptionHandler.cs" />
     <Compile Include="Level.cs" />

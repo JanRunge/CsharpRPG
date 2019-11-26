@@ -81,6 +81,7 @@ namespace STory.GameContent
                 CIO.Print(this.name + "'s inventory is empty");
                 return;
             }
+
             GenericOption takeAllOption = new GenericOption("take all");
             Optionhandler oh = new Optionhandler(this.name + "'s inventory ",true);
             Option selectedOption=null;

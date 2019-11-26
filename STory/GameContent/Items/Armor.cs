@@ -76,6 +76,10 @@ namespace STory.GameContent.Items
         }
         public Boolean isBetterThan(Armor a)
         {
+            if (a == null)
+            {
+                return true;
+            }
             float sumThis=0;
             float sumOther=0;
             foreach(DamageType d in DamageType.allDamageTypes())

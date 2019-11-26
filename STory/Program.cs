@@ -51,8 +51,10 @@ namespace STory
             Rooms = new Dictionary<Type, Room>();
             createStartRoom();
             CIO.initialize();
-
             currentRoom = Rooms[typeof(GameContent.Rooms.Forest_start)];
+            
+
+
             while (true)
             {
                 Console.WriteLine("#########################");

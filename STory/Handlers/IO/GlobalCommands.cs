@@ -49,7 +49,7 @@ namespace STory
         public static void GiveSword()
         {
             Program.player.giveItem(new Sword(10, 10, 30, "kauldruns knife"));
-            Helmet he = new Helmet(0.2f, 0.2f, 0.2f, 10, 10, "Helgen helmet");
+            Helmet he = new Helmet(0.2f, 0.2f, 0.2f, 10, 15, "Helgen helmet");
             Program.player.giveItem(he);
 
         }

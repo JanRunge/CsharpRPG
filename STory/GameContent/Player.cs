@@ -8,6 +8,7 @@ using STory.Handlers.Fight;
 using STory.GameContent.Items;
 using STory.GameContent.Items.Armors;
 using STory.Handlers.Option;
+using STory.GameContent.NPCs;
 
 namespace STory.GameContent
 {
@@ -105,71 +106,24 @@ namespace STory.GameContent
         }
         public void OpenInventory()
         {
-            GenericOption Category(){
-                printHeader();
-                Optionhandler OH = new Optionhandler("pick a category",true);
-                OH.setName("Inventory.Category");
-
-                foreach (string i in inventory.GetCategories())
+            void equipIfArmor(Item i)
+            {
+                if (Armor.isArmor(i))
                 {
-                    GenericOption GO = new GenericOption(i);
-                    OH.AddOption(GO);
-                }
-                GenericOption selected = (GenericOption) OH.selectOption();
-                Console.Clear();
-                return selected;
-            }
-            void Item(string category){
-                Option selected=null;
-                while (selected != Optionhandler.Exit)
-                {
-                    printHeader();
-                    Optionhandler OH = new Optionhandler(true);
-                    OH.setName("Inventory.Item");
-                    if (category == "Armor")
-                    {
-                        foreach (Item i in inventory.GetAllItems(category))
-                        {
-                            OH.AddOption(i);
-                        }
-                    }
-                    else
-                    {
-                        foreach (Item i in inventory.GetAllItems(category))
-                        {
-                            CIO.Print(i.getDescription());
-                        }
-                    }
-                    selected = (Option)OH.selectOption();
-                    if (Armor.isArmor(selected))
-                    {
-                        Armor a = (Armor)selected;
-                        if (a.IsEquipped())
-                        {
-                            this.unequipArmor(a);
-                        }
-                        else
-                        {
-                            this.EquipArmor(a);
-                        }
-                        
-                    }
-                    Console.Clear();
+                    this.EquipArmor((Armor) i);
                 }
             }
-            void printHeader(){
-                Console.Clear();
-                CIO.Print("########Inventory:########");
-                CIO.Print(this.getGold() + "g");
-            }
-            while (true){
-                GenericOption g = Category();
-                if(g== Optionhandler.Exit)
-                {
-                    return;
-                }
-                Item(g.name);//hier kann nur eine Exit-option rauskommen
-            }
+            Func<Item, bool> f = i => i.GetCategory() == "Armor";
+            Action<Item> a = i => equipIfArmor(i);
+            this.inventory.Open(f, a);
+        }
+        public void OpenInventoryForTrade(Merchant m)
+        {
+            Func<Item, bool> selectable = i => true;
+            Action<Item> onselect = i => m.SellTo(i);
+            Func<Item, bool> available = i => m.HasGold( (int) (i.worth * 0.9));//todo make 0.9 a var/dynamic
+            Func<Item, string> onNotavailable = i => "the merhcant doesnt have enough gold";
+            this.inventory.Open(selectable, onselect,available,onNotavailable);
         }
         public void EquipArmor(Armor a)
         {

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace STory.GameContent.NPCs
 {
     
-    class Merchant: NPC
+    public class Merchant: NPC
     {
         public Merchant()
         {
@@ -22,71 +22,53 @@ namespace STory.GameContent.NPCs
             this.inventory.AddItem(new Item(1, 4, "Ignmone", "Weapons"));
 
         }
-        public void OpenInventory()
+        public void OpenInventoryForTrade()
         {
-            GenericOption Category()
-            {
-                printHeader();
-                Optionhandler OH = new Optionhandler("pick a category", true);
-                OH.setName("Inventory.Category");
-
-                foreach (string i in inventory.GetCategories())
-                {
-                    GenericOption GO = new GenericOption(i);
-                    OH.AddOption(GO);
-                }
-                GenericOption selected = (GenericOption)OH.selectOption();
-                Console.Clear();
-                return selected;
-            }
-            void Itempicker(string category)
-            {
-                Option selected = null;
-                while (selected != Optionhandler.Exit)
-                {
-                    printHeader();
-                    Optionhandler OH = new Optionhandler(true);
-                    OH.setName("Inventory.Item");
-                    
-                    foreach (Item i in inventory.GetAllItems(category))
-                    {
-                        OH.AddOption(i);//todo: find a way to make it read if not enough gold
-                    }
-                    
-                    selected = OH.selectOption();
-                    if (Item.isItem(selected))
-                    {
-                        this.Buy((Item)selected);
-                    }
-                    
-                    Console.Clear();
-                }
-            }
-            void printHeader()
-            {
-                Console.Clear();
-                CIO.Print("########Inventory:########");
-                CIO.Print(this.getGold() + "g");
-            }
-            while (true)
-            {
-                GenericOption g = Category();
-                if (g == Optionhandler.Exit)
-                {
-                    return;
-                }
-                Itempicker(g.name);//hier kann nur eine Exit-option rauskommen
-            }
+            Func<Item, bool> f = i => true;
+            Action<Item> a = i => BuyFrom(i);
+            this.inventory.Open(f, a);
         }
-        public void Buy(Item i)
+        public void trade()
+        {
+            Option selectedOption=null;
+            Optionhandler oh = new Optionhandler("trade with "+this.name,true);
+            GenericOption opt = new GenericOption("Buy");
+            opt.AddExecutionAction(this.OpenInventoryForTrade);
+            oh.AddOption(opt);
+            opt = new GenericOption("Sell");
+            opt.AddExecutionAction(()=>Program.player.OpenInventoryForTrade(this));
+            oh.AddOption(opt);
+
+            while (selectedOption != Optionhandler.Exit)
+            {
+                selectedOption= oh.selectOption();
+            }
+
+            
+        }
+        public void BuyFrom(Item i)
         {
             Program.player.removeGold((int) (i.worth * 1.1));
             Inventory.transferItem(this.inventory, Program.player.inventory, i);
             this.addGold((int)(i.worth * 1.1));
         }
+        public void SellTo(Item i)
+        {
+            Program.player.AddGold((int)(i.worth *0.9));
+            Inventory.transferItem(Program.player.inventory, this.inventory, i);
+            this.removeGold((int)(i.worth * 0.9));
+        }
         public void addGold(int amnt)
         {
             this.gold += amnt;
+        }
+        public void removeGold(int amnt)
+        {
+            this.gold -= amnt;
+        }
+        public bool HasGold(int amnt)
+        {
+            return amnt <= gold;
         }
     }
 }

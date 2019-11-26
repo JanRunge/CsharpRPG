@@ -192,7 +192,7 @@ namespace STory
         }
 
         public virtual Option selectOption() {
-            if(canExit && !options.ContainsKey("E"))
+            if(canExit && !options.ContainsKey("e"))
             {
                 AddOption(Exit);
             }

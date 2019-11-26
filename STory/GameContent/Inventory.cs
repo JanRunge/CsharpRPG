@@ -1,5 +1,6 @@
 ﻿using STory.GameContent.Items;
 using STory.GameContent.Items.Armors;
+using STory.Handlers.Option;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -110,8 +111,86 @@ namespace STory.GameContent
         {
              armorset.Unequip(a);
         }
+        public void Open(Func<Item, bool> getsCommand, Action<Item> onItemSelection)
+        {
+            Open(getsCommand, onItemSelection, null, null);
+        }
+        public void Open(Func<Item,bool> getsCommand, Action<Item> onItemSelection, Func<Item, bool> isAvailable, Func<Item, string> UnavailableMessage)
+        {
+            GenericOption Category()
+            {
+                printHeader();
+                Optionhandler OH = new Optionhandler("pick a category", true);
+                OH.setName("Inventory.Category");
 
-        
+                foreach (string i in this.GetCategories())
+                {
+                    GenericOption GO = new GenericOption(i);
+                    OH.AddOption(GO);
+                }
+                GenericOption selected = (GenericOption)OH.selectOption();
+                Console.Clear();
+                return selected;
+            }
+            void Itempicker(string category)
+            {
+                Option selected = null;
+                while (selected != Optionhandler.Exit)
+                {
+                    printHeader();
+                    Optionhandler OH = new Optionhandler(true);
+                    OH.setName("Inventory.Item");
+
+                    foreach (Item i in this.GetAllItems(category))
+                    {
+                        if (getsCommand(i))
+                        {
+                            GenericItemOption opt = new GenericItemOption(i);
+                            if (isAvailable != null)
+                            {
+                                Func<bool> f = () => isAvailable(i);
+                                opt.SetAvailable(f);
+                            }
+                            if (UnavailableMessage != null)
+                            {
+                                Func<string> ff = () => UnavailableMessage(i);
+                                opt.setNotAvailable(ff);
+                            }
+                            OH.AddOption(opt);
+                        }
+                        else
+                        {
+                            CIO.Print(i.getDescription());
+                        }
+                    }
+                    
+
+                    selected = OH.selectOption();
+                    if (selected.GetType()==typeof(GenericItemOption))
+                    {
+                        onItemSelection(((GenericItemOption)selected).getItem());
+                    }
+
+                    Console.Clear();
+                }
+            }
+            void printHeader()
+            {
+                Console.Clear();
+                CIO.Print("########Inventory:########");
+                //CIO.Print(this.getGold() + "g");//todo
+            }
+            while (true)
+            {
+                GenericOption g = Category();
+                if (g == Optionhandler.Exit)
+                {
+                    return;
+                }
+                Itempicker(g.name);//hier kann nur eine Exit-option rauskommen
+            }
+        }
+
 
 
     }
