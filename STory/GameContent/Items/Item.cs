@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace STory
+namespace STory.GameContent.Items
 {
     public class Item : Option
     {
@@ -14,11 +14,12 @@ namespace STory
         public string name;
         protected string category;
         public bool sellable;
-        protected void init(int weight,  int worth, string name)
+        public Item(int weight,  int worth, string name,string category)
         {
             this.weight = weight;
             this.worth = worth;
             this.name = name;
+            this.category = category;
         }
         public virtual string getDescription()
         {
@@ -54,6 +55,10 @@ namespace STory
         public String GetCategory()
         {
             return this.category;
+        }
+        public static bool isItem(Option o)
+        {
+            return o.GetType().Namespace.Contains("Items");
         }
 
     }

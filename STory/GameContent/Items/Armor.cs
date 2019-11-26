@@ -12,14 +12,10 @@ namespace STory.GameContent.Items
         Dictionary<DamageType, float> armorvals;
         protected Armortype type;
         Boolean equipped = false;
-        public Armor(Dictionary<DamageType, float> Armorvals, Armortype t, int weight, int worth, string name)
+        public Armor(Dictionary<DamageType, float> Armorvals, Armortype t, int weight, int worth, string name): base(weight, worth, name, "Armor")
         {
             this.armorvals = Armorvals;
             type = t;
-            this.category = "Armor";
-            this.weight = weight;
-            this.worth = worth;
-            this.name = name;
 
         }
         public Armor(float slashArmor, float bluntarmor,float pokearmor, Armortype t, int weight, int worth, string name)

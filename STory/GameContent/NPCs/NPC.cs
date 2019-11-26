@@ -17,6 +17,7 @@ namespace STory.GameContent
         public string name;
         public Faction faction;
         public Inventory inventory = new Inventory();
+        protected int gold = 10;
         Weapon weapon;
 
         public NPC() { }
@@ -133,6 +134,10 @@ namespace STory.GameContent
         public int XPOnDeath()
         {
             return 10;
+        }
+        public int getGold()
+        {
+            return this.gold;
         }
     }
 }

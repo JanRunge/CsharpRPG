@@ -86,6 +86,7 @@ namespace STory
                     throw new Exception("This command is already taken! (Cheat)");
                 }
                 if (options.ContainsKey(preferredCommand)) {
+                    //if the command is taken, re-key the old command with a new one
                     currentBlocker = options[preferredCommand];
                     options.Remove(preferredCommand);
                     AddOptionWithoutKey(currentBlocker, preferredCommand);
