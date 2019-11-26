@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using STory.Handlers.Fight;
+using STory.Handlers.Option;
 
 namespace STory
 {

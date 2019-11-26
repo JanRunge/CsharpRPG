@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using STory.Types;
 using STory.GameContent.Items;
 using STory.GameContent.Items.Armors;
+using STory.Handlers.Option;
 
 namespace STory.GameContent
 {

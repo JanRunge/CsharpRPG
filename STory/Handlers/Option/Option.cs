@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace STory
+namespace STory.Handlers.Option
 {
     public interface Option
     {
