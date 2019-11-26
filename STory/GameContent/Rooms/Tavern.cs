@@ -1,4 +1,5 @@
 ﻿using STory.GameContent.Minigames;
+using STory.GameContent.NPCs;
 using STory.Handlers.Option;
 using System;
 using System.Collections.Generic;
@@ -19,15 +20,13 @@ namespace STory.GameContent.Rooms
         public override Boolean OnEnter()
         {
             base.OnEnter();
-
+            Merchant merchant = new Merchant();
+            addNPC(merchant );
             AddRoom(typeof(Town));
-            Option selected=null;
-            while (selected != Optionhandler.Exit)
-            {
-                Optionhandler handler = new Optionhandler(true);
-                handler.AddOption(new Dicegame());
-                selected = handler.selectOption();
-            }
+
+            addActivity(new Dicegame());
+            addActivity(new GenericOption("trade with merchant",merchant.trade));
+
             return true;
 
         }

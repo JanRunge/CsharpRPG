@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using STory.GameContent;
 using STory.GameContent.Items.Armors;
 using STory.GameContent.Minigames;
+using STory.Handlers.Option;
 using STory.Types;
 
 namespace STory
@@ -52,7 +53,7 @@ namespace STory
             createStartRoom();
             CIO.initialize();
             currentRoom = Rooms[typeof(GameContent.Rooms.Forest_start)];
-            
+            GlobalCommands.GiveSword();
 
 
             while (true)
@@ -60,9 +61,28 @@ namespace STory
                 Console.WriteLine("#########################");
                 if (currentRoom.OnEnter())
                 {
-                    Optionhandler h = new Optionhandler(currentRoom.name+". next room?");
-                    h.AddOptions(Optionhandler.RoomsToOption( currentRoom.nextRooms));
-                    Room nextroom = (Room)h.selectOption();
+                    Room nextroom=null;
+                    while (nextroom == null)
+                    {
+                        Optionhandler h;
+                        if (currentRoom.ActivitiesInRoom != null)
+                        {
+                            h = new Optionhandler(currentRoom.name + ". Activities:");
+                            h.AddOptions(currentRoom.ActivitiesInRoom);
+                            h.AddHeading("Next Rooms:");
+                        }
+                        else
+                        {
+                            h = new Optionhandler(currentRoom.name + ". next room?");
+                        }
+                        h.AddOptions(Optionhandler.RoomsToOption(currentRoom.nextRooms));
+                        Option selectedOpt = h.selectOption();
+                        if (selectedOpt.GetType() != typeof(GenericOption))
+                        { 
+                            nextroom = (Room)selectedOpt;
+                        }
+                    }
+                    
                     Console.Clear();
                     currentRoom.OnExit();
                     currentRoom = nextroom;

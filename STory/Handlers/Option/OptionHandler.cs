@@ -12,6 +12,8 @@ namespace STory
     {
         public static GenericOption Exit = new GenericOption("Exit", "E");
         Dictionary<string, Option> options = new Dictionary<string, Option>();
+        Dictionary<Option, string> headings = new Dictionary<Option, string>();//The heading to be displayed AFTER the option
+
         Action generateOptions;
         List<string> preferredCommands = new List<string>();
         string text;
@@ -65,6 +67,10 @@ namespace STory
                 }
                 CIO.Print(getTextWithCommand(kv.Value.getText(), kv.Key));
                 Console.ForegroundColor = ConsoleColor.White;
+                if (headings.ContainsKey(kv.Value))
+                {
+                    CIO.Print(headings[kv.Value]);
+                }
             }
         }
 
@@ -243,6 +249,11 @@ namespace STory
         public void clearOptions()
         {
             this.options.Clear();
+        }
+        public void AddHeading(string heading)
+        {
+            //the heading will be displayed after the newest option
+            headings.Add(options.ElementAt(options.Count - 1).Value, heading);
         }
         
     }

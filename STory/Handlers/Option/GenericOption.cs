@@ -20,6 +20,11 @@ namespace STory
         protected List<Action> OnTry;
         protected List<Action> OnFailure;
 
+        public GenericOption(string name, Action OnExecution):this(name)
+        {
+            this.OnExecution = new List<Action>();
+            this.OnExecution.Add(OnExecution);
+        }
         public GenericOption(string name) : this(name, (ConsoleColor?)null)
         {
 

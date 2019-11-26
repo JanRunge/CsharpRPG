@@ -19,6 +19,23 @@ namespace STory
         
         
         public List<Room> nextRooms = new List<Room>();
+        public List<Option> ActivitiesInRoom;
+        protected void addActivity(Option activity)
+        {
+            if (ActivitiesInRoom == null)
+            {
+                ActivitiesInRoom = new List<Option>();
+            }
+            ActivitiesInRoom.Add(activity);
+        }
+        protected void addNPC(Attackable newNPC)
+        {
+            if (NPCs == null)
+            {
+                NPCs = new List<Attackable>();
+            }
+            NPCs.Add(newNPC);
+        }
         public virtual Boolean OnEnter()
         {
             Console.WriteLine("you entered " + name);
