@@ -11,7 +11,7 @@ namespace STory.Handlers.Option
         public Dictionary<string, Option> options = new Dictionary<string, Option>();
         public string Prefix;
 
-        public ConsoleColor? GetColor()
+        public ConsoleColor GetColor()
         {
             throw new NotImplementedException();
         }

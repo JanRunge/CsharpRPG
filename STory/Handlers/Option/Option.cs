@@ -9,7 +9,7 @@ namespace STory.Handlers.Option
     public interface Option
     {
         string getText();
-        ConsoleColor? GetColor();
+        ConsoleColor GetColor();
         Boolean isAvailable();
         string getPreferredCommand();
         void Select();

@@ -56,7 +56,7 @@ namespace STory.GameContent.Items
         {
             equipped = false;
         }
-        public override ConsoleColor? GetColor()
+        public override ConsoleColor GetColor()
         {
             if (equipped)
             {
@@ -68,7 +68,7 @@ namespace STory.GameContent.Items
             }
             else
             {
-                return null;
+                return CIO.defaultcolor;
             }
         }
         public Boolean IsEquipped()

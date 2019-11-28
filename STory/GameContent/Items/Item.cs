@@ -41,9 +41,9 @@ namespace STory.GameContent.Items
             return this.name+ " " + weight + "kg " + worth + "g";
         }
 
-        public virtual ConsoleColor? GetColor()
+        public virtual ConsoleColor GetColor()
         {
-            return null;
+            return CIO.defaultcolor;
         }
 
         public bool isAvailable()

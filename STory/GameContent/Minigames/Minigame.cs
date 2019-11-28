@@ -42,9 +42,9 @@ namespace STory.GameContent.Minigames
         
         public abstract void Play();
         public abstract void PrintRules();
-        public ConsoleColor? GetColor()
+        public ConsoleColor GetColor()
         {
-            return null;
+            return CIO.defaultcolor;
         }
 
         public string getPreferredCommand()

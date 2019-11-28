@@ -98,8 +98,8 @@ namespace STory
         public bool isAvailalbe(string _s){
             return true;
         }
-        public ConsoleColor? GetColor(){
-            return null;
+        public ConsoleColor GetColor(){
+            return CIO.defaultcolor;
         }
 
         public bool isAvailable()

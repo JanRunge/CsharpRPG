@@ -10,7 +10,7 @@ namespace STory
     public static class CIO //console input output
     {
         static ConsoleColor userinputColor = ConsoleColor.Blue;
-        static ConsoleColor defaultcolor = ConsoleColor.White;
+        public static ConsoleColor defaultcolor = ConsoleColor.White;
         static List<Handlers.IO.Context> lastContexts= new List<Handlers.IO.Context>();
         static Dictionary<string, ConsoleColor> ColorVars = 
             new Dictionary<string, ConsoleColor> { 
@@ -29,8 +29,10 @@ namespace STory
             {"{Magenta}",ConsoleColor.Magenta           },
             {"{Red}",ConsoleColor.Red                   },
             {"{White}",ConsoleColor.White               },
-            {"{Yellow}",ConsoleColor.Yellow             }
+            {"{Yellow}",ConsoleColor.Yellow             },
+            {"{Default}",defaultcolor}
             };
+        public static Dictionary<ConsoleColor, string> ColorVarsReversed = new Dictionary<ConsoleColor, string>();
 
         public static string ReadLine()
         {
@@ -72,11 +74,14 @@ namespace STory
         }
         private static bool stringContainsColorVar(string str)
         {
-            foreach (KeyValuePair<string, ConsoleColor> kvPair in ColorVars)
+            if (str.Contains("{"))//pre check the string, so we dont have to check for every keyword
             {
-                if (str.Contains(kvPair.Key))
+                foreach (KeyValuePair<string, ConsoleColor> kvPair in ColorVars)
                 {
-                    return true;
+                    if (str.Contains(kvPair.Key))
+                    {
+                        return true;//end as soon as possible
+                    }
                 }
             }
             return false;
@@ -138,16 +143,7 @@ namespace STory
 
                 }
                 Console.ForegroundColor = defaultcolor;
-
-
-
-
-
-
-
             }
-
-
         }
         public static void Print(string s, ConsoleColor TextColor)
         {
@@ -166,6 +162,14 @@ namespace STory
         {
             Console.ForegroundColor=defaultcolor;
             GlobalCommands.LoadAll();
+            foreach(KeyValuePair<string,ConsoleColor> kvPair in ColorVars)
+            {
+                if(kvPair.Value == defaultcolor)
+                {
+                    continue;
+                }
+                ColorVarsReversed.Add(kvPair.Value, kvPair.Key);//twist key as value and value as key
+            }
         }
         public static void StartNewContext(Handlers.IO.Context c)
         {

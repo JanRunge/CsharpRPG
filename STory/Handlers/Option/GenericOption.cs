@@ -11,7 +11,7 @@ namespace STory
     {
         public string name;
         protected string preferredCommand;
-        protected ConsoleColor? color = null;
+        protected ConsoleColor color = CIO.defaultcolor;
         protected Func<string> notavailableMessageAction;
 
         protected Func<bool> available;
@@ -25,18 +25,19 @@ namespace STory
             this.OnExecution = new List<Action>();
             this.OnExecution.Add(OnExecution);
         }
-        public GenericOption(string name) : this(name, (ConsoleColor?)null)
+        public GenericOption(string name) : this(name, CIO.defaultcolor)
         {
 
         }
-        public GenericOption(string name, ConsoleColor? color) : this(name,true,null){
+        public GenericOption(string name, ConsoleColor color) : this(name,true, color)
+        {
             
         }
-        public GenericOption(string name, Boolean available) : this(name, available, null)
+        public GenericOption(string name, Boolean available) : this(name, available, CIO.defaultcolor)
         {
 
         }
-        public GenericOption(string name, Boolean available, ConsoleColor? color)
+        public GenericOption(string name, Boolean available, ConsoleColor color)
         {
             this.name = name;
             SetAvailable(available);
@@ -101,7 +102,7 @@ namespace STory
             return available();
         }
 
-        public ConsoleColor? GetColor()
+        public ConsoleColor GetColor()
         {
             return color;
         }

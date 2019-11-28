@@ -61,7 +61,8 @@ namespace STory
             }
             List<Multioption> processedMultioptions = new List<Multioption>();
             foreach (KeyValuePair<string, Option> kv in options) {
-                
+                ConsoleColor color = default;
+                string output="";
                 if (kv.Value.GetType() == typeof(Multioption))
                 {
                     Multioption opt = (Multioption)kv.Value;
@@ -69,33 +70,48 @@ namespace STory
                     {
                         processedMultioptions.Add(opt);
                         string prefix = opt.Prefix;
-                        string output = prefix;
+                        output = prefix;
                         foreach (KeyValuePair<string, Option> pair in opt.options)
                         {
-                            output = output + " " + pair.Value.getText() + "[" + pair.Key + "]";
+                            Option subOpt = pair.Value;
+                            
+                            if (subOpt.isAvailable())
+                            {
+                                color = subOpt.GetColor();
+                                if (color != CIO.defaultcolor)
+                                {//only write in a color if it is not default, to save memory & cpu time
+                                    output = output + " " + CIO.ColorVarsReversed[color] + subOpt.getText() + "[" + pair.Key + "]";
+                                }
+                                else
+                                {
+                                    output = output + " " + subOpt.getText() + "[" + pair.Key + "]";
+                                }
+                                
+                            }
+                            else
+                            {
+                                output = output + " {Red}" + subOpt.getText() + "[" + pair.Key + "]{Default}";
+                            }
+                            
                         }
-                        CIO.Print(output);
                     }
                 }
                 else
                 {
-                    if (kv.Value.GetColor() != null)
-                    {
-                        Console.ForegroundColor = (ConsoleColor)kv.Value.GetColor();
-                    }
-                    if (!kv.Value.isAvailable())
-                    {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                    }
-                    CIO.Print(getTextWithCommand(kv.Value.getText(), kv.Key));
-                    Console.ForegroundColor = ConsoleColor.White;
+                   color = kv.Value.GetColor();
+                    output = getTextWithCommand(kv.Value.getText(), kv.Key);
                 }
+                if (output != "")
+                {
+                    CIO.Print(output, color);
+                    if (headings.ContainsKey(kv.Value))
+                    {
+                        CIO.Print(headings[kv.Value]);
+                    }
+                }
+                
 
                 
-                if (headings.ContainsKey(kv.Value))
-                {
-                    CIO.Print(headings[kv.Value]);
-                }
             }
         }
         public bool isCommandTaken(string s)
