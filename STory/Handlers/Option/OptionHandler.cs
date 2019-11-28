@@ -104,14 +104,11 @@ namespace STory
                 if (output != "")
                 {
                     CIO.Print(output, color);
-                    if (headings.ContainsKey(kv.Value))
+                    if (headings.ContainsKey(kv.Value))//print the heading only when
                     {
                         CIO.Print(headings[kv.Value]);
                     }
                 }
-                
-
-                
             }
         }
         public bool isCommandTaken(string s)

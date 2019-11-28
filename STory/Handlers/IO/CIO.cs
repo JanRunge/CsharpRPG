@@ -142,13 +142,14 @@ namespace STory
                     Console.ForegroundColor = color;
 
                 }
+                Console.WriteLine();
                 Console.ForegroundColor = defaultcolor;
             }
         }
         public static void Print(string s, ConsoleColor TextColor)
         {
             Console.ForegroundColor=TextColor;
-            Console.WriteLine(s);
+            Print(s);
             Console.ForegroundColor=defaultcolor;
         }
         public static void PrintError(string s)
