@@ -56,6 +56,7 @@ namespace STory
             GlobalCommands.GiveSword();
 
 
+
             while (true)
             {
                 Console.WriteLine("#########################");

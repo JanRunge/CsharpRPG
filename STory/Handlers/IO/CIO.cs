@@ -12,6 +12,25 @@ namespace STory
         static ConsoleColor userinputColor = ConsoleColor.Blue;
         static ConsoleColor defaultcolor = ConsoleColor.White;
         static List<Handlers.IO.Context> lastContexts= new List<Handlers.IO.Context>();
+        static Dictionary<string, ConsoleColor> ColorVars = 
+            new Dictionary<string, ConsoleColor> { 
+            {"{Black}",ConsoleColor.Black               },
+            {"{Blue}",ConsoleColor.Blue                 },
+            {"{Cyan}",ConsoleColor.Cyan                 },
+            {"{DarkBlue}",ConsoleColor.DarkBlue         },
+            {"{DarkCyan}",ConsoleColor.DarkCyan         },
+            {"{DarkGray}",ConsoleColor.DarkGray         },
+            {"{DarkGreen}",ConsoleColor.DarkGreen       },
+            {"{DarkMagenta}",ConsoleColor.DarkMagenta   },
+            {"{DarkRed}",ConsoleColor.DarkRed           },
+            {"{DarkYellow}",ConsoleColor.DarkYellow     },
+            {"{Gray}",ConsoleColor.Gray                 },
+            {"{Green}",ConsoleColor.Green               },
+            {"{Magenta}",ConsoleColor.Magenta           },
+            {"{Red}",ConsoleColor.Red                   },
+            {"{White}",ConsoleColor.White               },
+            {"{Yellow}",ConsoleColor.Yellow             }
+            };
 
         public static string ReadLine()
         {
@@ -47,13 +66,88 @@ namespace STory
         {
             Console.WriteLine(s);
         }
-        public static void Print(string s)
+        private static void print(string s)
         {
             Console.WriteLine(s);
         }
-        public static void Print(string s, string[] placeholders, ConsoleColor?[] colors)
+        private static bool stringContainsColorVar(string str)
         {
-            //parse the string, and whenever aplaceholde ris found change the color accordingly
+            foreach (KeyValuePair<string, ConsoleColor> kvPair in ColorVars)
+            {
+                if (str.Contains(kvPair.Key))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        private static int[] findNextOccuranceOfColorVar(string str)
+        {
+            int index;
+            int lowestIndex = 999999999;
+            int varLength = -1;
+            foreach (KeyValuePair<string, ConsoleColor> kvPair in ColorVars)
+            {
+                index = str.IndexOf(kvPair.Key);
+                if (index != -1)
+                {
+                    if (index < lowestIndex)
+                    {
+                        lowestIndex = index;
+                        varLength = kvPair.Key.Length;
+                    }
+                }
+            }
+            return new int[2] { lowestIndex, varLength };
+        }
+        public static void Print(string s)
+        {
+            
+            if (!stringContainsColorVar(s))
+            {
+                print(s);
+            }
+            else
+            {
+                string stringToPrint;
+                string remainingString=s;
+                string colorvar;
+                //parse the string, and whenever a placeholder is found change the color accordingly
+                int[] nextColorVar;
+                ConsoleColor color = defaultcolor;
+
+                while (remainingString.Length > 0)
+                {
+
+                    nextColorVar = findNextOccuranceOfColorVar(remainingString);
+                    if (nextColorVar[1] != -1)
+                    {
+                        colorvar = remainingString.Substring(nextColorVar[0], nextColorVar[1]);
+                        stringToPrint = remainingString.Substring(0, nextColorVar[0]);
+                        color = ColorVars[colorvar];
+                        remainingString = remainingString.Substring(stringToPrint.Length+ nextColorVar[1]);
+                    }
+                    else
+                    {
+                        stringToPrint = remainingString;
+                        remainingString = remainingString.Substring(stringToPrint.Length);
+
+                    }
+                    Console.Write(stringToPrint);
+                    Console.ForegroundColor = color;
+
+                }
+                Console.ForegroundColor = defaultcolor;
+
+
+
+
+
+
+
+            }
+
+
         }
         public static void Print(string s, ConsoleColor TextColor)
         {
