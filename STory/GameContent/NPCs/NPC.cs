@@ -17,7 +17,7 @@ namespace STory.GameContent
         public Boolean alive = true;
         public string name;
         public Faction faction;
-        public Inventory inventory = new Inventory();
+        protected Inventory inventory = new Inventory();
         protected int gold = 10;
         Weapon weapon;
 
@@ -68,12 +68,14 @@ namespace STory.GameContent
                 inventory.RemoveItem(i);
             }
         }
-        public void FillInventory(List<Item> items)
+        public void AddToInventory(List<Item> items)
         {
             inventory.AddItems(items);
         }
 
-
+        /// <summary>
+        /// Open a user dialog which allows th user navigate through the NPCs Inventory and take Items
+        /// </summary>
         public void loot()
         {
             if (!this.inventory.ContainsAnyItems())
@@ -81,14 +83,14 @@ namespace STory.GameContent
                 CIO.Print(this.name + "'s inventory is empty");
                 return;
             }
-
             GenericOption takeAllOption = new GenericOption("take all");
             Optionhandler oh = new Optionhandler(this.name + "'s inventory ",true);
             Option selectedOption=null;
+            //the user stays inside the inventory until all items are gon or he picks exit
             while (selectedOption != Optionhandler.Exit && this.inventory.ContainsAnyItems())
             {
                 List<Item> allitems = this.inventory.GetAllItems();
-                oh.clearOptions();
+                oh.ClearOptions();
                 oh.AddOptions(Optionhandler.ItemToOption(allitems));
                 oh.AddOption(takeAllOption);
                 selectedOption = oh.selectOption();
@@ -104,16 +106,20 @@ namespace STory.GameContent
                     Inventory.transferItem(this.inventory, Program.player.inventory, (Item)selectedOption);
                 }
             }
-            
         }
+        /// <summary>
+        /// get the total damagereduction against that damagetype
+        /// </summary>
         public float getDefense(DamageType d)
         {
             return inventory.GetArmorset().getDamageBlock(d);
         }
         public string getName() {
             return this.name;
-
         }
+        /// <summary>
+        /// Attack the NPC with damage amoutn + type. Removes the health after substraction blocked damage
+        /// </summary>
         public void receiveDamage(int amount, DamageType type)
         {
             float dmg;
@@ -137,9 +143,21 @@ namespace STory.GameContent
         {
             return 10;
         }
+        public void RemoveGold(int amnt)
+        {
+            this.gold -= amnt;
+        }
         public int getGold()
         {
             return this.gold;
+        }
+        public void AddGold(int amnt)
+        {
+            this.gold+=amnt;
+        }
+        public bool HasGold(int amnt)
+        {
+            return amnt <= gold;
         }
     }
 }

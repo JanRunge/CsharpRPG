@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace STory
 {
-    
+    /// <summary>
+    /// static class that handles ConsoleOutputs and user-input
+    /// </summary>
     public static class CIO //console input output
     {
         static ConsoleColor userinputColor = ConsoleColor.Blue;
@@ -33,10 +35,15 @@ namespace STory
             {"{Default}",defaultcolor}
             };
         public static Dictionary<ConsoleColor, string> ColorVarsReversed = new Dictionary<ConsoleColor, string>();
-
+        /// <summary>
+        /// Reads user input and returns the first string which is NOT a global Command
+        /// </summary>
         public static string ReadLine()
         {
-            Boolean TestCheat(string input)
+            /// <summary>
+            /// Checks if the String is a Global COmmand and Executes it, if true
+            /// </summary>
+            Boolean TestGC(string input)
             {
                 if (GlobalCommands.existsCheat(input))
                 {
@@ -50,28 +57,40 @@ namespace STory
             {
                 Console.ForegroundColor = userinputColor;
                 string input = Console.ReadLine().ToLower();
-                if (!TestCheat(input))
+                if (!TestGC(input))
                 {
                     Console.ForegroundColor= defaultcolor;
                     return input;
                 }
             }
         }
-
+        /// <summary>
+        /// Prints the given string in the Color defined for help-texts
+        /// </summary>
         public static void PrintHelp(string s)
         {
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine(s);
             Console.ForegroundColor = defaultcolor;
         }
+        /// <summary>
+        /// Prints the given string in the Color defined for story-texts
+        /// </summary>
         public static void PrintStory(string s)
         {
             Console.WriteLine(s);
         }
+        /// <summary>
+        /// Private print method which wraps Console.writeLine
+        /// </summary>
         private static void print(string s)
         {
             Console.WriteLine(s);
         }
+
+        /// <summary>
+        /// Checks if a string contains a placeholder which is associated with a color
+        /// </summary>
         private static bool stringContainsColorVar(string str)
         {
             if (str.Contains("{"))//pre check the string, so we dont have to check for every keyword
@@ -86,7 +105,10 @@ namespace STory
             }
             return false;
         }
-        private static int[] findNextOccuranceOfColorVar(string str)
+        /// <summary>
+        /// returns the index of the first occurance of a placeholder which is associated with a color inside the given string
+        /// </summary>
+        private static int[] findFirstOccuranceOfColorVar(string str)
         {
             int index;
             int lowestIndex = 999999999;
@@ -105,6 +127,11 @@ namespace STory
             }
             return new int[2] { lowestIndex, varLength };
         }
+        /// <summary>
+        /// Prints a String to the Console.
+        /// The String may contain a placeholder E.g. {Red}, which will result in all chars after that begin printed in red. 
+        /// <para> the conversion from Color to Playceholder can be made through CIO.ColorVarsReversed </para>
+        /// </summary>
         public static void Print(string s)
         {
             
@@ -114,52 +141,60 @@ namespace STory
             }
             else
             {
-                string stringToPrint;
+                string stringUntilNextPlaceholder;
                 string remainingString=s;
-                string colorvar;
+                string colorPlaceholder;
                 //parse the string, and whenever a placeholder is found change the color accordingly
-                int[] nextColorVar;
+                int[] start_lengthNextPlaceholder;
                 ConsoleColor color = defaultcolor;
-
                 while (remainingString.Length > 0)
                 {
 
-                    nextColorVar = findNextOccuranceOfColorVar(remainingString);
-                    if (nextColorVar[1] != -1)
+                    start_lengthNextPlaceholder = findFirstOccuranceOfColorVar(remainingString);
+                    if (start_lengthNextPlaceholder[1] != -1)
                     {
-                        colorvar = remainingString.Substring(nextColorVar[0], nextColorVar[1]);
-                        stringToPrint = remainingString.Substring(0, nextColorVar[0]);
-                        color = ColorVars[colorvar];
-                        remainingString = remainingString.Substring(stringToPrint.Length+ nextColorVar[1]);
+                        colorPlaceholder = remainingString.Substring(start_lengthNextPlaceholder[0], start_lengthNextPlaceholder[1]);
+                        stringUntilNextPlaceholder = remainingString.Substring(0, start_lengthNextPlaceholder[0]);
+                        color = ColorVars[colorPlaceholder];
+                        remainingString = remainingString.Substring(stringUntilNextPlaceholder.Length+ start_lengthNextPlaceholder[1]);
                     }
                     else
                     {
-                        stringToPrint = remainingString;
-                        remainingString = remainingString.Substring(stringToPrint.Length);
+                        stringUntilNextPlaceholder = remainingString;
+                        remainingString = remainingString.Substring(stringUntilNextPlaceholder.Length);
 
                     }
-                    Console.Write(stringToPrint);
+                    Console.Write(stringUntilNextPlaceholder);
                     Console.ForegroundColor = color;
-
                 }
                 Console.WriteLine();
                 Console.ForegroundColor = defaultcolor;
             }
         }
+        /// <summary>
+        /// Prints a String to the Console in the given Color.
+        /// The String may contain a placeholder E.g. {Red}, which will result in all chars after that begin printed in red. 
+        /// <para> the conversion from Color to Playceholder can be made through CIO.ColorVarsReversed </para>
+        /// </summary>
         public static void Print(string s, ConsoleColor TextColor)
         {
             Console.ForegroundColor=TextColor;
             Print(s);
             Console.ForegroundColor=defaultcolor;
         }
+        /// <summary>
+        /// Prints the given string in the Color defined for Error-texts
+        /// </summary>
         public static void PrintError(string s)
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine(s);
             Console.ForegroundColor = defaultcolor;
         }
-
-        public static void initialize()
+        /// <summary>
+        /// Initializes the class CIO to make it ready for use
+        /// </summary>
+        public static void Initialize()
         {
             Console.ForegroundColor=defaultcolor;
             GlobalCommands.LoadAll();
@@ -172,29 +207,42 @@ namespace STory
                 ColorVarsReversed.Add(kvPair.Value, kvPair.Key);//twist key as value and value as key
             }
         }
+        /// <summary>
+        /// Adds a new Context to the Context-Stack
+        /// </summary>
         public static void StartNewContext(Handlers.IO.Context c)
         {
             lastContexts.Add(c);
         }
+        /// <summary>
+        /// Pops the top-Context of the stack and then reprints the Context below
+        /// </summary>
         public static void EndContext()
         {
             EndContextWithoutReEnter();
             ReEnterCurrentContext();
         }
+        /// <summary>
+        /// reprints the current top-Context below
+        /// </summary>
         public static void ReEnterCurrentContext()
         {
             if (lastContexts.Count > 0)
             {
-                lastContexts[lastContexts.Count - 1].reEnter();
+                lastContexts[lastContexts.Count - 1].Enter();
             }
         }
-
+        /// <summary>
+        /// Pops the current top-Context without reprinting the one below
+        /// </summary>
         public static void EndContextWithoutReEnter()
         {
             lastContexts.RemoveAt(lastContexts.Count - 1);
-
         }
-        public static Handlers.IO.Context getCurrentContext()
+        /// <summary>
+        /// Returns the current top-Context
+        /// </summary>
+        public static Handlers.IO.Context GetCurrentContext()
         {
             return lastContexts[lastContexts.Count - 1];
         }

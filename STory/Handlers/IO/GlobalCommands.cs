@@ -10,9 +10,14 @@ using STory.GameContent.Items.Armors;
 
 namespace STory
 {
+    /// <summary>
+    /// GlobalCommands are Actions which can be executed in any situation. Most of them can be Executed by the user through a command.
+    /// Some of them qualify as Cheats, while others are basic game mechanics
+    /// </summary>
     public static class GlobalCommands
     {
         private static Dictionary<string, List<Action>> commands = new Dictionary<string, List<Action>>();
+
         public static void GiveGold()
         {
             CIO.StartNewContext(new Handlers.IO.Context("How much?"));
@@ -60,18 +65,17 @@ namespace STory
             {
                 return;
             }
-            Attackable enemy = Program.currentRoom.getNPCWithName(input);
+            Attackable enemy = Program.currentRoom.getNPCByName(input);
             Fight f = new Fight(enemy);
             f.startFight();
         }
-        public static void help() {
-            if(CIO.getCurrentContext().name== "Inventory.Category")
+        public static void Help() {
+            if(CIO.GetCurrentContext().name== "Inventory.Category")
             {
                 CIO.PrintHelp("help for Inventory");
             }
             else
             {
-                
                 CIO.PrintHelp("type i for inventory");
                 CIO.PrintHelp("type Attack to attack an NPC");
 
@@ -141,8 +145,8 @@ namespace STory
             AddCheat("give gold", () => GlobalCommands.GiveGold());
             AddCheat("i", () => Program.player.OpenInventory());
             AddCheat("Attack", () => Attack());
-            AddCheat("h", () => help());
-            AddCheat("help", () => help());
+            AddCheat("h", () => Help());
+            AddCheat("help", () => Help());
             AddCheat("give sword", () => GiveSword());
             AddCheat("give xp", () => GiveXP());
         }

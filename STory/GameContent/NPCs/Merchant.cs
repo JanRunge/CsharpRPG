@@ -50,25 +50,14 @@ namespace STory.GameContent.NPCs
         {
             Program.player.removeGold((int) (i.worth * 1.1));
             Inventory.transferItem(this.inventory, Program.player.inventory, i);
-            this.addGold((int)(i.worth * 1.1));
+            this.AddGold((int)(i.worth * 1.1));
         }
         public void SellTo(Item i)
         {
             Program.player.AddGold((int)(i.worth *0.9));
             Inventory.transferItem(Program.player.inventory, this.inventory, i);
-            this.removeGold((int)(i.worth * 0.9));
+            this.RemoveGold((int)(i.worth * 0.9));
         }
-        public void addGold(int amnt)
-        {
-            this.gold += amnt;
-        }
-        public void removeGold(int amnt)
-        {
-            this.gold -= amnt;
-        }
-        public bool HasGold(int amnt)
-        {
-            return amnt <= gold;
-        }
+        
     }
 }

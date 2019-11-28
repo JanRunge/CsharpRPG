@@ -11,12 +11,11 @@ namespace STory
     public class Optionhandler
     {
         public static GenericOption Exit = new GenericOption("Exit", "E");
+
         Dictionary<string, Option> options = new Dictionary<string, Option>();
         Dictionary<Option, string> headings = new Dictionary<Option, string>();//The heading to be displayed AFTER the option
-
-
-        Action generateOptions;
-        List<string> preferredCommands = new List<string>();
+        Func<List<Option>> generateOptions;
+        List<string> preferredCommands = new List<string>(); 
         string text;
         string name="";
         Boolean canExit;
@@ -44,16 +43,23 @@ namespace STory
         {
             name = t;
         }
-        public void setOptionGenerator(Action fun)
+        /// <summary>
+        /// add an Function which will be used to calculate all Options everytime the Handler is printed.
+        /// </summary>
+        public void setOptionGenerator(Func<List<Option>> fun)
         {
             this.generateOptions = fun;
         }
+        /// <summary>
+        /// print a styled list with all Options and their commands
+        /// </summary>
         public void printOptions()
         {
             if (generateOptions != null)
             {
                 this.options = new Dictionary<string, Option>();
-                generateOptions();
+                AddOptions(generateOptions());
+                
             }
             if (this.text != "")
             {
@@ -86,13 +92,11 @@ namespace STory
                                 {
                                     output = output + " " + subOpt.getText() + "[" + pair.Key + "]";
                                 }
-                                
                             }
                             else
                             {
                                 output = output + " {Red}" + subOpt.getText() + "[" + pair.Key + "]{Default}";
                             }
-                            
                         }
                     }
                 }
@@ -111,14 +115,23 @@ namespace STory
                 }
             }
         }
-        public bool isCommandTaken(string s)
+        /// <summary>
+        /// Checks wether an command is already taken in this handler
+        /// </summary>
+        private bool isCommandTaken(string s)
         {
             return options.ContainsKey(s);
         }
+        /// <summary>
+        /// Add an option. If multiple Options prefer the same command, the last one wins
+        /// </summary>
         public void AddOption(Option option)
         {
             AddOptionWithoutKey(option, "");
         }
+        /// <summary>
+        /// Add an option without using the key. If multiple Options prefer the same command, the last one wins
+        /// </summary>
         public void AddOptionWithoutKey(Option option, string forbiddenKey) {
             //wenn der preferred command der option bereits vergeben ist, wird der blockierende reKeyed
             if (option.GetType() == typeof(GenericItemOption))
@@ -141,29 +154,25 @@ namespace STory
             {
                 throw new Exception("Multiple Options desire the same command!");
             }
-            Option currentBlocker;
             if (preferredCommand != null) {
                 if (GlobalCommands.existsCheat(preferredCommand)) {
                     throw new Exception("This command is already taken! (Cheat)");
                 }
                 if (isCommandTaken(preferredCommand)) {
+                    Option currentBlocker;//the Option which currently holds the preferred command
                     //if the command is taken, re-key the old command with a new one
+                    currentBlocker = options[preferredCommand];
+                    options.Remove(preferredCommand);
                     
-                        currentBlocker = options[preferredCommand];
-                        options.Remove(preferredCommand);
-                        
-                        if (currentBlocker.GetType() == typeof(Multioption))
-                        {
-                            AddOptionWithoutKey(((Multioption)currentBlocker).options[preferredCommand], preferredCommand);
-                            ((Multioption)currentBlocker).options.Remove(preferredCommand);
-                        }
-                        else
-                        {
-                            AddOptionWithoutKey(currentBlocker, preferredCommand);
-                        }
-
-                    
-                    
+                    if (currentBlocker.GetType() == typeof(Multioption))
+                    {
+                        AddOptionWithoutKey(((Multioption)currentBlocker).options[preferredCommand], preferredCommand);
+                        ((Multioption)currentBlocker).options.Remove(preferredCommand);
+                    }
+                    else
+                    {
+                        AddOptionWithoutKey(currentBlocker, preferredCommand);
+                    }
                 }
                 command = preferredCommand;
             }
@@ -171,32 +180,39 @@ namespace STory
                 command = generateCommand(option.getText(), forbiddenKey);
             }
             AddOption(option, command);
-
         }
         public void AddOptions(List<Option> options) {
             foreach (Option o in options) {
                 string command = generateCommand(o.getText());
                 AddOption(o, command);
             }
-
-
         }
+        /// <summary>
+        /// Add the option and give it a command
+        /// </summary>
         public virtual void AddOption(Option option, string command) {
             if (isCommandTaken(command.ToLower()) || GlobalCommands.existsCheat(command.ToLower())) {
                 throw new Exception("This command is already taken!");
             }
             options.Add(command.ToLower(), option);
-
         }
-
+        /// <summary>
+        /// get the Text with its command print-ready
+        /// </summary>
         private string getTextWithCommand(string text, string command)
         {
 
             return text + "[" + command.ToUpper() + "]";
         }
+        /// <summary>
+        /// generate a command for the given Text
+        /// </summary>
         private string generateCommand(string text) {
             return generateCommand(text, "");
         }
+        /// <summary>
+        /// generate a command for the given Text which is not the forbiddenComamnd
+        /// </summary>
         private string generateCommand(string text, string forbiddenCommand)
         {
             text = text.ToLower();
@@ -250,7 +266,6 @@ namespace STory
                 }
                 i++;
             }
-
         }
         protected virtual void printNotAvailable(Option o)
         {
@@ -282,13 +297,22 @@ namespace STory
                 return false;
             }
         }
+        /// <summary>
+        /// print all Options and prompt the user to enter a command until a valid one is entered.
+        /// <para>
+        /// also calls the select Method of the selected option.
+        /// </para>
+        /// <para>
+        /// returns the selected option
+        /// </para>
+        /// </summary>
         public virtual Option selectOption() {
             
-            if(canExit && !options.ContainsKey("e"))
+            if(canExit && !options.ContainsKey("e"))// add the exit command if needed
             {
                 AddOption(Exit);
             }
-            if (this.name != "")
+            if (this.name != "")// start a new Context
             {
                 CIO.StartNewContext(new Handlers.IO.Context(this, this.name));
             }
@@ -298,9 +322,11 @@ namespace STory
             }
             printOptions();
             string userInput = CIO.ReadLine();
-            while (!isCommandAvailable(userInput)) {
-                if (options.ContainsKey(userInput) && !options[userInput].isAvailable()) {
-                    printNotAvailable(options[userInput]);
+            while (!isCommandAvailable(userInput))// prompt the user for input until he enters a valid command
+            { 
+                if (options.ContainsKey(userInput) && !options[userInput].isAvailable())// if the command exists but is not available
+                { 
+                    printNotAvailable(options[userInput]);//print the specific message of that option
                 } else {
                     CIO.Print("invalid option");
                 }
@@ -309,7 +335,7 @@ namespace STory
             CIO.EndContext();
             Option selectedOption = options[userInput];
             if(selectedOption.GetType() == typeof(Multioption))
-            {
+            {//if the command is linked to a multioption, the Real Option is inside that multioption
                 selectedOption = ((Multioption)selectedOption).Select(userInput);
             }
             else
@@ -317,8 +343,6 @@ namespace STory
                 selectedOption.Select();
             }
             
-            
-
             return selectedOption;
         }
         public static List<Option> RoomsToOption(List<Room> Rooms)
@@ -339,10 +363,18 @@ namespace STory
             }
             return l;
         }
-        public void clearOptions()
+        /// <summary>
+        /// Remove all options from this Handler
+        /// </summary>
+        public void ClearOptions()
         {
             this.options.Clear();
+            headings.Clear();
+            this.preferredCommands.Clear();
         }
+        /// <summary>
+        /// Adds a heading which will be printed after the most recently added option
+        /// </summary>
         public void AddHeading(string heading)
         {
             //the heading will be displayed after the newest option

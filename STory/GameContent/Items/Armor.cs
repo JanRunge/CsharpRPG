@@ -7,11 +7,16 @@ using STory.Types;
 
 namespace STory.GameContent.Items
 {
+    /// <summary>
+    /// a piece of armor which can be equipped by the player or NPCs
+    /// </summary>
     public abstract class Armor : Item
     {
-        Dictionary<DamageType, float> armorvals;
+        
         protected Armortype type;
+        Dictionary<DamageType, float> armorvals;
         Boolean equipped = false;
+
         public Armor(Dictionary<DamageType, float> Armorvals, Armortype t, int weight, int worth, string name): base(weight, worth, name, "Armor")
         {
             this.armorvals = Armorvals;
@@ -19,15 +24,17 @@ namespace STory.GameContent.Items
             actions.Add(new GenericOption("equip", () => Program.player.EquipArmor(this)));
 
         }
-        public Armor(float slashArmor, float bluntarmor,float pokearmor, Armortype t, int weight, int worth, string name)
+        public Armor(float slashArmor, float bluntarmor, float pokearmor, Armortype t, int weight, int worth, string name)
             : this(new Dictionary<DamageType, float> {  { DamageType.Slash, slashArmor },
                                                         { DamageType.Poke, pokearmor },
                                                         { DamageType.Blunt, bluntarmor },
                                                      }
-                   ,t , weight, worth, name
-            )
+                   ,t , weight, worth, name)
         {
         }
+        /// <summary>
+        /// returns the damagereduction for the given damagetype
+        /// </summary>
         public float getArmor(DamageType d)
         {
             if (this.armorvals.ContainsKey(d))
@@ -62,7 +69,7 @@ namespace STory.GameContent.Items
             {
                 return ConsoleColor.DarkYellow;
             }
-            else if(this.isBetterThan(Program.player.inventory.GetArmorset().getItem(this.getArmortype())))
+            else if(this.IsBetterThan(Program.player.inventory.GetArmorset().getItem(this.getArmortype())))
             {
                 return ConsoleColor.Green;
             }
@@ -75,7 +82,10 @@ namespace STory.GameContent.Items
         {
             return this.equipped;
         }
-        public Boolean isBetterThan(Armor a)
+        /// <summary>
+        /// Checks if the Armorpiec is better  (has a higher total of Damagereduction) than the param
+        /// </summary>
+        public Boolean IsBetterThan(Armor a)
         {
             if (a == null)
             {

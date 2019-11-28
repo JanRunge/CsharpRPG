@@ -15,13 +15,13 @@ namespace STory
     {
         public static Room currentRoom;
         public static Player player;
-        public static Dictionary<Type, Room> Rooms ;
+        
 
         static void createStartRoom()
         {
             void add(Room r)
             {
-                Rooms.Add(r.GetType(), r);
+                Room.AllRooms.Add(r.GetType(), r);
             }
             add(new GameContent.Rooms.Forest_start());
         }
@@ -39,23 +39,18 @@ namespace STory
         }
         static void restart()
         {
-            currentRoom = Rooms[typeof(GameContent.Rooms.Forest_start)];
-            throw new Exception("");
-            //testcommit
+            currentRoom = Room.AllRooms[typeof(GameContent.Rooms.Forest_start)];
+            throw new NotImplementedException();
         }
 
         static void Main(string[] args)
         {
             player = new Player();
             
-            
-            Rooms = new Dictionary<Type, Room>();
             createStartRoom();
-            CIO.initialize();
-            currentRoom = Rooms[typeof(GameContent.Rooms.Forest_start)];
+            CIO.Initialize();
+            currentRoom = Room.AllRooms[typeof(GameContent.Rooms.Forest_start)];
             GlobalCommands.GiveSword();
-
-
 
             while (true)
             {
@@ -66,7 +61,7 @@ namespace STory
                     while (nextroom == null)
                     {
                         Optionhandler h;
-                        if (currentRoom.ActivitiesInRoom != null)
+                        if (currentRoom.ActivitiesInRoom != null)//print activities if there are any
                         {
                             h = new Optionhandler(currentRoom.name + ". Activities:");
                             h.AddOptions(currentRoom.ActivitiesInRoom);
@@ -83,7 +78,6 @@ namespace STory
                             nextroom = (Room)selectedOpt;
                         }
                     }
-                    
                     Console.Clear();
                     currentRoom.OnExit();
                     currentRoom = nextroom;

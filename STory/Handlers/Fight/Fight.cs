@@ -39,7 +39,7 @@ namespace STory.GameContent
         }
         public Weapon getPlayerWeapon(){
             Optionhandler oh = new Optionhandler("Choose your weapon");
-            oh.setOptionGenerator(() => oh.AddOptions(Optionhandler.ItemToOption(Program.player.inventory.GetAllItems("Weapons"))));
+            oh.setOptionGenerator(() => Optionhandler.ItemToOption(Program.player.inventory.GetAllItems("Weapons")));
             return (Weapon)oh.selectOption();
         }
     }
