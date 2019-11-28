@@ -32,6 +32,10 @@ namespace STory.GameContent
         }
         public List<Item> GetAllItems(string category)
         {
+            if (!itemDictionary.ContainsKey(category))
+            {
+                return new List<Item>();
+            }
             return itemDictionary[category];
         }
         public List<string> GetCategories()
@@ -115,7 +119,16 @@ namespace STory.GameContent
         {
             Open(getsCommand, onItemSelection, null, null);
         }
-        public void Open(Func<Item,bool> getsCommand, Action<Item> onItemSelection, Func<Item, bool> isAvailable, Func<Item, string> UnavailableMessage)
+        public void Open(Func<Item, bool> getsCommand, Action<Item> onItemSelection, Func<Item, bool> isAvailable, Func<Item, string> UnavailableMessage)
+        {
+            Open(getsCommand, onItemSelection, null, null,false);
+        }
+        public void Open(bool allowItemActions)
+        {
+            Open((i)=>true, null, null, null, true);
+        }
+
+        public void Open(Func<Item,bool> getsCommand, Action<Item> onItemSelection, Func<Item, bool> isAvailable, Func<Item, string> UnavailableMessage,bool allowItemActions)
         {
             GenericOption Category()
             {
@@ -140,30 +153,42 @@ namespace STory.GameContent
                     printHeader();
                     Optionhandler OH = new Optionhandler(true);
                     OH.setName("Inventory.Item");
-
-                    foreach (Item i in this.GetAllItems(category))
+                    List<Item> Items = this.GetAllItems(category);
+                    if (Items.Count == 0)
                     {
-                        if (getsCommand(i))
+                        return;
+                    }
+                    foreach (Item i in Items)
+                    {
+                        if (allowItemActions == false)
                         {
-                            GenericItemOption opt = new GenericItemOption(i);
-                            if (isAvailable != null)
+                            if (getsCommand(i))
                             {
-                                Func<bool> f = () => isAvailable(i);
-                                opt.SetAvailable(f);
+                                GenericItemOption opt = new GenericItemOption(i);
+                                if (isAvailable != null)
+                                {
+                                    Func<bool> f = () => isAvailable(i);
+                                    opt.SetAvailable(f);
+                                }
+                                if (UnavailableMessage != null)
+                                {
+                                    Func<string> ff = () => UnavailableMessage(i);
+                                    opt.setNotAvailable(ff);
+                                }
+                                OH.AddOption(opt);
                             }
-                            if (UnavailableMessage != null)
+                            else
                             {
-                                Func<string> ff = () => UnavailableMessage(i);
-                                opt.setNotAvailable(ff);
+                                CIO.Print(i.getDescription());
                             }
-                            OH.AddOption(opt);
                         }
                         else
                         {
-                            CIO.Print(i.getDescription());
+                            GenericItemOption opt = new GenericItemOption(i);
+                            OH.AddOption(opt);
                         }
+                        
                     }
-                    
 
                     selected = OH.selectOption();
                     if (selected.GetType()==typeof(GenericItemOption))

@@ -6,30 +6,45 @@ using System.Threading.Tasks;
 
 namespace STory.Handlers.Option
 {
-    class Multioption 
+    class Multioption : Option
     {
-        List<Option> options= new List<Option>();
+        public Dictionary<string, Option> options = new Dictionary<string, Option>();
+        public string Prefix;
 
-        public Multioption()
+        public ConsoleColor? GetColor()
         {
-
-        }
-        public Multioption(List<Option> l)
-        {
-            options = l;
-        }
-        public void AddOption(Option o)
-        {
-            options.Add(o);
-        }
-        public void getText()
-        {
-            
+            throw new NotImplementedException();
         }
 
-        public static bool isMultioption(object o)
+        public string getPreferredCommand()
         {
-            return o.GetType() == typeof(Multioption);
+            throw new NotImplementedException();
+        }
+
+        public string getText()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool isAvailable()
+        {
+            throw new NotImplementedException();
+        }
+        public bool isAvailable(string command)
+        {
+            return options[command].isAvailable();
+        }
+
+        public void Select()
+        {
+            throw new NotImplementedException();
+        }
+        public Option Select(string command)
+        {
+            Option selected= options[command];
+            selected.Select();
+            return selected;
+
         }
     }
 }

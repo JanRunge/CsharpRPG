@@ -18,5 +18,13 @@ namespace STory.Handlers.Option
         {
             return item;
         }
+        public List<GenericOption> getOptions()
+        {
+            return item.getOptions();
+        }
+        public string NameOfItem()
+        {
+            return item.name;
+        }
     }
 }

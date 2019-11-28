@@ -95,7 +95,7 @@ namespace STory
         public string getText(){
             return this.name;
         }
-        public bool isAvailalbe(){
+        public bool isAvailalbe(string _s){
             return true;
         }
         public ConsoleColor? GetColor(){

@@ -51,6 +51,10 @@ namespace STory
         {
             Console.WriteLine(s);
         }
+        public static void Print(string s, string[] placeholders, ConsoleColor?[] colors)
+        {
+            //parse the string, and whenever aplaceholde ris found change the color accordingly
+        }
         public static void Print(string s, ConsoleColor TextColor)
         {
             Console.ForegroundColor=TextColor;

@@ -115,7 +115,7 @@ namespace STory.GameContent
             }
             Func<Item, bool> f = i => i.GetCategory() == "Armor";
             Action<Item> a = i => equipIfArmor(i);
-            this.inventory.Open(f, a);
+            this.inventory.Open(true);
         }
         public void OpenInventoryForTrade(Merchant m)
         {

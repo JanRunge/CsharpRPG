@@ -14,6 +14,7 @@ namespace STory
         Dictionary<string, Option> options = new Dictionary<string, Option>();
         Dictionary<Option, string> headings = new Dictionary<Option, string>();//The heading to be displayed AFTER the option
 
+
         Action generateOptions;
         List<string> preferredCommands = new List<string>();
         string text;
@@ -58,29 +59,69 @@ namespace STory
             {
                 CIO.Print(this.text);
             }
+            List<Multioption> processedMultioptions = new List<Multioption>();
             foreach (KeyValuePair<string, Option> kv in options) {
-                if (kv.Value.GetColor() != null) {
-                    Console.ForegroundColor = (ConsoleColor) kv.Value.GetColor();
+                
+                if (kv.Value.GetType() == typeof(Multioption))
+                {
+                    Multioption opt = (Multioption)kv.Value;
+                    if (!processedMultioptions.Contains(opt))
+                    {
+                        processedMultioptions.Add(opt);
+                        string prefix = opt.Prefix;
+                        string output = prefix;
+                        foreach (KeyValuePair<string, Option> pair in opt.options)
+                        {
+                            output = output + " " + pair.Value.getText() + "[" + pair.Key + "]";
+                        }
+                        CIO.Print(output);
+                    }
                 }
-                if (!kv.Value.isAvailable()) {
-                    Console.ForegroundColor = ConsoleColor.Red;
+                else
+                {
+                    if (kv.Value.GetColor() != null)
+                    {
+                        Console.ForegroundColor = (ConsoleColor)kv.Value.GetColor();
+                    }
+                    if (!kv.Value.isAvailable())
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                    }
+                    CIO.Print(getTextWithCommand(kv.Value.getText(), kv.Key));
+                    Console.ForegroundColor = ConsoleColor.White;
                 }
-                CIO.Print(getTextWithCommand(kv.Value.getText(), kv.Key));
-                Console.ForegroundColor = ConsoleColor.White;
+
+                
                 if (headings.ContainsKey(kv.Value))
                 {
                     CIO.Print(headings[kv.Value]);
                 }
             }
         }
-
+        public bool isCommandTaken(string s)
+        {
+            return options.ContainsKey(s);
+        }
         public void AddOption(Option option)
         {
             AddOptionWithoutKey(option, "");
         }
         public void AddOptionWithoutKey(Option option, string forbiddenKey) {
             //wenn der preferred command der option bereits vergeben ist, wird der blockierende reKeyed
-            
+            if (option.GetType() == typeof(GenericItemOption))
+            {
+                GenericItemOption opt = (GenericItemOption)option;
+                Multioption mo = new Multioption();
+                mo.Prefix = opt.NameOfItem();
+                foreach(Option o in opt.getOptions())
+                {
+                    string comm = generateCommand(opt.NameOfItem()+ o.getText());
+                    mo.options.Add(comm, o);
+                    options.Add(comm, mo);
+                    
+                }
+                return;
+            }
             string command = null;
             string preferredCommand = option.getPreferredCommand();
             if (preferredCommands.Contains(preferredCommand))
@@ -92,11 +133,24 @@ namespace STory
                 if (GlobalCommands.existsCheat(preferredCommand)) {
                     throw new Exception("This command is already taken! (Cheat)");
                 }
-                if (options.ContainsKey(preferredCommand)) {
+                if (isCommandTaken(preferredCommand)) {
                     //if the command is taken, re-key the old command with a new one
-                    currentBlocker = options[preferredCommand];
-                    options.Remove(preferredCommand);
-                    AddOptionWithoutKey(currentBlocker, preferredCommand);
+                    
+                        currentBlocker = options[preferredCommand];
+                        options.Remove(preferredCommand);
+                        
+                        if (currentBlocker.GetType() == typeof(Multioption))
+                        {
+                            AddOptionWithoutKey(((Multioption)currentBlocker).options[preferredCommand], preferredCommand);
+                            ((Multioption)currentBlocker).options.Remove(preferredCommand);
+                        }
+                        else
+                        {
+                            AddOptionWithoutKey(currentBlocker, preferredCommand);
+                        }
+
+                    
+                    
                 }
                 command = preferredCommand;
             }
@@ -115,7 +169,7 @@ namespace STory
 
         }
         public virtual void AddOption(Option option, string command) {
-            if (options.ContainsKey(command.ToLower()) || GlobalCommands.existsCheat(command.ToLower())) {
+            if (isCommandTaken(command.ToLower()) || GlobalCommands.existsCheat(command.ToLower())) {
                 throw new Exception("This command is already taken!");
             }
             options.Add(command.ToLower(), option);
@@ -132,9 +186,10 @@ namespace STory
         }
         private string generateCommand(string text, string forbiddenCommand)
         {
+            text = text.ToLower();
             bool commandAllowed(String scommand)
             {
-                return scommand.ToLower() != forbiddenCommand.ToLower() && !options.ContainsKey(scommand.ToLower()) && !GlobalCommands.existsCheat(scommand.ToLower());
+                return scommand.ToLower() != forbiddenCommand.ToLower() && !isCommandTaken(scommand.ToLower()) && !GlobalCommands.existsCheat(scommand.ToLower());
             }
             string command;
             command = text.ToLower().Substring(0, 1);
@@ -196,8 +251,26 @@ namespace STory
             }
             
         }
-
+        public bool isCommandAvailable(string command)
+        {
+            if (options.ContainsKey(command))
+            {
+                if (options[command].GetType() == typeof(Multioption))
+                {
+                    return ((Multioption)options[command]).isAvailable(command);
+                }
+                else
+                {
+                    return options[command].isAvailable();
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
         public virtual Option selectOption() {
+            
             if(canExit && !options.ContainsKey("e"))
             {
                 AddOption(Exit);
@@ -212,8 +285,7 @@ namespace STory
             }
             printOptions();
             string userInput = CIO.ReadLine();
-            while (!options.ContainsKey(userInput) || !options[userInput].isAvailable()) {
-
+            while (!isCommandAvailable(userInput)) {
                 if (options.ContainsKey(userInput) && !options[userInput].isAvailable()) {
                     printNotAvailable(options[userInput]);
                 } else {
@@ -223,7 +295,15 @@ namespace STory
             }
             CIO.EndContext();
             Option selectedOption = options[userInput];
-            selectedOption.Select();
+            if(selectedOption.GetType() == typeof(Multioption))
+            {
+                selectedOption = ((Multioption)selectedOption).Select(userInput);
+            }
+            else
+            {
+                selectedOption.Select();
+            }
+            
             
 
             return selectedOption;
