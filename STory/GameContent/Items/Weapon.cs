@@ -22,7 +22,7 @@ namespace STory.GameContent.Items
         
         public override string getDescription()//for inventory
         {
-            return getText(name + "(" + this.damagetype.description + ")");
+            return AppendWeightAndWorth(name + "(" + this.damagetype.description + ")");
         }
         public static List<Weapon> ItemsToWeapons(List<Item> i)
         {

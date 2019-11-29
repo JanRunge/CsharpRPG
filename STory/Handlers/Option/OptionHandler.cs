@@ -102,7 +102,15 @@ namespace STory
                 }
                 else
                 {
-                   color = kv.Value.GetColor();
+                    if (kv.Value.isAvailable())
+                    {
+                        color = kv.Value.GetColor();
+                        
+                    }
+                    else
+                    {
+                        color = ConsoleColor.Red;
+                    }
                     output = getTextWithCommand(kv.Value.getText(), kv.Key);
                 }
                 if (output != "")

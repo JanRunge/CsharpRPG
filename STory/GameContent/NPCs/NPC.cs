@@ -131,6 +131,9 @@ namespace STory.GameContent
                 this.alive = false;
             }
         }
+        /// <summary>
+        /// Attack the target with the equipped weapon
+        /// </summary>
         public void attack(Attackable target)
         {
             target.receiveDamage(weapon.damage, weapon.damagetype);
@@ -139,6 +142,9 @@ namespace STory.GameContent
         {
             return this.alive;
         }
+        /// <summary>
+        /// returns the amount of experience points the Unit sets free when dying
+        /// </summary>
         public int XPOnDeath()
         {
             return 10;
@@ -147,7 +153,7 @@ namespace STory.GameContent
         {
             this.gold -= amnt;
         }
-        public int getGold()
+        public int GetGold()
         {
             return this.gold;
         }

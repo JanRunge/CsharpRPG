@@ -25,20 +25,22 @@ namespace STory.GameContent.Items
             this.category = category;
             actions = new List<GenericOption> { new GenericOption("Drop", () => Program.player.inventory.RemoveItem(this)) };
         }
+        //todo: refactor all these getText functions
         public virtual string getDescription()
         {
+            //description for 
             string s = this.name + " " + weight + "kg " + worth + "g";
             return s;
         }
-        public virtual string getText(string s)
+        public virtual string AppendWeightAndWorth(string s)
         {
             s += " "+weight + "kg " + worth + "g";
             return s;
         }
 
         public virtual string getText()
-        {
-            return this.name+ " " + weight + "kg " + worth + "g";
+        {//from the Option interface
+            return getDescription();
         }
 
         public virtual ConsoleColor GetColor()
@@ -64,6 +66,9 @@ namespace STory.GameContent.Items
         {
             return o.GetType().Namespace.Contains("Items");
         }
+        /// <summary>
+        /// Returns all Actions which are aviable on that Item in the Playerinventory
+        /// </summary>
         public List<GenericOption> getOptions()
         {
             return this.actions;

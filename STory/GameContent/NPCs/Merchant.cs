@@ -8,7 +8,9 @@ using System.Threading.Tasks;
 
 namespace STory.GameContent.NPCs
 {
-    
+    /// <summary>
+    /// An NPC which can Trade with the player
+    /// </summary>
     public class Merchant: NPC
     {
         public Merchant()
@@ -22,12 +24,18 @@ namespace STory.GameContent.NPCs
             this.inventory.AddItem(new Item(1, 4, "Ignmone", "Weapons"));
 
         }
+        /// <summary>
+        /// Opens a Dialog for the user to buy items from the merchant.
+        /// </summary>
         public void OpenInventoryForTrade()
         {
             Func<Item, bool> f = i => true;
             Action<Item> a = i => BuyFrom(i);
             this.inventory.Open(f, a);
         }
+        /// <summary>
+        /// Opens a Dialog for the user to trade with the merchant. The user can choose between selling and buying
+        /// </summary>
         public void trade()
         {
             Option selectedOption=null;
@@ -43,15 +51,19 @@ namespace STory.GameContent.NPCs
             {
                 selectedOption= oh.selectOption();
             }
-
-            
         }
+        /// <summary>
+        /// Buy an Item from the merchant
+        /// </summary>
         public void BuyFrom(Item i)
         {
             Program.player.removeGold((int) (i.worth * 1.1));
             Inventory.transferItem(this.inventory, Program.player.inventory, i);
             this.AddGold((int)(i.worth * 1.1));
         }
+        /// <summary>
+        /// Sell an Item to the merchant
+        /// </summary>
         public void SellTo(Item i)
         {
             Program.player.AddGold((int)(i.worth *0.9));

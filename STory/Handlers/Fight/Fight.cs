@@ -10,6 +10,9 @@ using STory.Handlers.IO;
 
 namespace STory.GameContent
 {
+    /// <summary>
+    /// An Object to Handle a fight between the player and an Attackable
+    /// </summary>
     class Fight
     {
         public Attackable Enemy;
@@ -17,6 +20,9 @@ namespace STory.GameContent
         {
             this.Enemy = Enemy;
         }
+        /// <summary>
+        /// Deal Damage to the Attackable and Receive Damage from the Attackable
+        /// </summary>
         public void Attack()
         {
             Program.player.attack(Enemy);
@@ -25,6 +31,9 @@ namespace STory.GameContent
             }
             
         }
+        /// <summary>
+        /// User and Enemy attack each other until one dies.
+        /// </summary>
         public void startFight()
         {
             //attacks back and forth until someone dies
@@ -37,6 +46,9 @@ namespace STory.GameContent
             
 
         }
+        /// <summary>
+        /// Let the Player choose his weapon for the next turn
+        /// </summary>
         public Weapon getPlayerWeapon(){
             Optionhandler oh = new Optionhandler("Choose your weapon");
             oh.setOptionGenerator(() => Optionhandler.ItemToOption(Program.player.inventory.GetAllItems("Weapons")));

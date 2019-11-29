@@ -19,10 +19,12 @@ namespace STory
         public bool thrownToNewRoom = false;
         public List<NPC> NPCs;
         public List<GenericOption> ActionsInRoom = new List<GenericOption>();
-        
-        
+
         public List<Room> nextRooms = new List<Room>();
         public List<Option> ActivitiesInRoom;
+        /// <summary>
+        /// Add an Option to the Room which will be choosable when the OnEnter method completes
+        /// </summary>
         protected void addActivity(Option activity)
         {
             if (ActivitiesInRoom == null)
@@ -31,6 +33,9 @@ namespace STory
             }
             ActivitiesInRoom.Add(activity);
         }
+        /// <summary>
+        /// Add an NPC to the Room
+        /// </summary>
         protected void addNPC(NPC newNPC)
         {
             if (NPCs == null)
@@ -40,34 +45,23 @@ namespace STory
             NPCs.Add(newNPC);
         }
         /// <summary>
-        /// This function gets called when the Room is Entered
-        /// <para> The magic stuff happens here: sub classes implement their story in this Func</para>
+        /// Print the enter-message
         /// </summary>
         public virtual Boolean OnEnter()
         {
+            
+            /// This function gets called when the Room is Entered
+            /// The magic stuff happens here: sub classes implement their story in this Func
             Console.WriteLine("you entered " + name);
            
             return true;
         }
         /// <summary>
-        /// This function gets called when the Room is Exited
+        /// Print the leave-message
         /// </summary>
         public virtual void OnExit()
-        {
+        {// This function gets called when the Room is Exited
             Console.WriteLine("you left " + name);
-        }
-        public void PrintNextOptions()
-        {
-            Console.WriteLine("The next Areas:");
-            int i = 0;
-            Console.ForegroundColor= ConsoleColor.Yellow;
-            foreach (Room r in this.nextRooms)
-            {
-                Console.WriteLine(r.name+"["+i+"]");
-                i++;
-            }
-            Console.ForegroundColor= ConsoleColor.White;
-
         }
         /// <summary>
         /// Add a Room by its type to which can be walked from this room
@@ -98,6 +92,10 @@ namespace STory
             }
             r.LastRoom = this;
         }
+        /// <summary>
+        /// Get the NPC inside the Room which has the name
+        /// <para> returns null if none is found </para>
+        /// </summary>
         public NPC getNPCByName(string s){
             foreach(NPC a in this.NPCs){
                 if (a.getName()==s){
