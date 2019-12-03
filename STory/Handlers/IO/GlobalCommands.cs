@@ -126,6 +126,7 @@ namespace STory
             AddCheat("help", () => Help());
             AddCheat("give sword", () => GiveSword());
             AddCheat("give xp", () => GiveXP());
+            AddCheat("debugging", () => CIO.ToggleDebugging());
         }
     }
 }

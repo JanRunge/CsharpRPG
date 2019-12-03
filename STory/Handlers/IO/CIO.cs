@@ -13,6 +13,8 @@ namespace STory
     {
         static ConsoleColor userinputColor = ConsoleColor.Blue;
         public static ConsoleColor defaultcolor = ConsoleColor.White;
+        static bool debugging = false;
+
         static List<Handlers.IO.Context> lastContexts= new List<Handlers.IO.Context>();
         static Dictionary<string, ConsoleColor> ColorVars = 
             new Dictionary<string, ConsoleColor> { 
@@ -213,6 +215,7 @@ namespace STory
         public static void StartNewContext(Handlers.IO.Context c)
         {
             lastContexts.Add(c);
+            PrintDebug("Contextcount after starting: " + lastContexts.Count);
         }
         /// <summary>
         /// Pops the top-Context of the stack and then reprints the Context below
@@ -221,6 +224,7 @@ namespace STory
         {
             EndContextWithoutReEnter();
             ReEnterCurrentContext();
+
         }
         /// <summary>
         /// reprints the current top-Context below
@@ -238,6 +242,7 @@ namespace STory
         public static void EndContextWithoutReEnter()
         {
             lastContexts.RemoveAt(lastContexts.Count - 1);
+            PrintDebug("Contextcount after ending: " + lastContexts.Count);
         }
         /// <summary>
         /// Returns the current top-Context
@@ -249,7 +254,38 @@ namespace STory
         //TODO: does the contextstack grow? DO i end them correctly??
         public static void Clear()
         {
-            Console.Clear();
+            if (!debugging)
+            {
+                Console.Clear();
+            }
+            
+        }
+        public static void PrintDebug(string s)
+        {
+            if (debugging)
+            {
+                Print("<<" + s + ">>", ConsoleColor.Magenta);
+            }
+        }
+
+        public static void EnableDebugging()
+        {
+            debugging = true;
+        }
+        public static void DisableDebugging()
+        {
+            debugging = false;
+        }
+        public static void ToggleDebugging()
+        {
+            if (debugging)
+            {
+                DisableDebugging();
+            }
+            else
+            {
+                EnableDebugging();
+            }
         }
 
     }
