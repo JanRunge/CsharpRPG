@@ -146,18 +146,18 @@ namespace STory
         {
             if (notavailableMessageAction == null)
             {
-                CIO.Print("not avaulable");
+                CIO.PrintError("not avaulable");
             }
             else
             {
-                CIO.Print(notavailableMessageAction());
+                CIO.PrintError(notavailableMessageAction());
             }
         }
         public virtual void onFailure()
         {
             if (OnFailure == null)
             {
-                Console.WriteLine("Failed (generic)");
+                CIO.PrintError("Failed (generic)");
             }
             else
             {

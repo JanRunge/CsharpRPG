@@ -24,7 +24,7 @@ namespace STory
             int amount = -1;
             while (amount == -1)
             {
-                Console.WriteLine("How much?");
+                CIO.Print("How much?");
                 string input = CIO.ReadLine();
                 if (wannaExit(input))
                 {
@@ -41,7 +41,7 @@ namespace STory
             int amount = -1;
             while (amount == -1)
             {
-                Console.WriteLine("How much?");
+                CIO.Print("How much?");
                 string input = CIO.ReadLine();
                 if (wannaExit(input))
                 {
@@ -59,7 +59,7 @@ namespace STory
 
         }
         public static void Attack() {
-            Console.WriteLine("Which NPC?");
+            CIO.Print("Which NPC?");
             string input = CIO.ReadLine();
             if (wannaExit(input))
             {
@@ -83,29 +83,6 @@ namespace STory
 
 
         }
-
-        public static void Loot()
-        {
-            CIO.StartNewContext(new Handlers.IO.Context("Loot who?"));
-            NPC target = null;
-            while (target == null)
-            {
-                Console.WriteLine("Loot who?");
-                string input = CIO.ReadLine();
-                if (wannaExit(input))
-                {
-                    return;
-                }
-                foreach(NPC npc in Program.currentRoom.NPCs)
-                {
-                    if (npc.name == input){
-
-                    }
-                }
-            }
-            CIO.EndContextWithoutReEnter();
-        }
-
         private static bool wannaExit(string input){
             return input.ToLower() == "e";
         }

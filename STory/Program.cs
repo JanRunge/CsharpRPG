@@ -81,7 +81,7 @@ namespace STory
                             nextroom = (Room)selectedOpt;
                         }
                     }
-                    Console.Clear();
+                    CIO.Clear();
                     currentRoom.OnExit();
                     currentRoom = nextroom;
                 }

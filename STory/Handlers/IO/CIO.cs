@@ -247,6 +247,10 @@ namespace STory
             return lastContexts[lastContexts.Count - 1];
         }
         //TODO: does the contextstack grow? DO i end them correctly??
+        public static void Clear()
+        {
+            Console.Clear();
+        }
 
     }
 }

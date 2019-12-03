@@ -61,7 +61,7 @@ namespace STory.GameContent
         public void AddGold(int amnt)
         {
             this.gold += amnt;
-            Console.WriteLine("Received " + amnt + " gold");
+            CIO.Print("Received " + amnt + " gold");
         }
         public void giveItem(Item i)
         {

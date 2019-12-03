@@ -20,11 +20,11 @@ namespace STory
         }
         public override void onNotAvailable()
         {
-            Console.WriteLine("Not Enough money");
+            CIO.Print("Not Enough money");
         }
         public override void onFailure()
         {
-            Console.WriteLine("the guard doesnt accept your bribe");
+            CIO.Print("the guard doesnt accept your bribe");
         }
         public void tryBribe(float chance)
         {

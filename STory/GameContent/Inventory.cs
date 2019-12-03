@@ -214,7 +214,7 @@ namespace STory.GameContent
             {
                 printHeader();
                 GenericOption g = PickCategory();
-                Console.Clear();
+                CIO.Clear();
                 if (g == Optionhandler.Exit)
                 {
                     return;
@@ -283,7 +283,7 @@ namespace STory.GameContent
                 {
                     onItemSelection(((GenericItemOption)selected).getItem());
                 }
-                Console.Clear();
+                CIO.Clear();
             }
         }
         /// <summary>
@@ -309,7 +309,7 @@ namespace STory.GameContent
         /// </summary>
         protected void printHeader()
         {
-            Console.Clear();
+            CIO.Clear();
             CIO.Print("########Inventory:########");
             //CIO.Print(this.getGold() + "gold");//todo
         }

@@ -19,8 +19,8 @@ namespace STory.GameContent.Rooms
         {
             if (!unlocked)
             {
-                Console.WriteLine("You try to enter "+this.name);
-                Console.WriteLine("A guard approaches you");
+                CIO.Print("You try to enter "+this.name);
+                CIO.PrintStory("A guard approaches you");
                 Optionhandler d = new Optionhandler("'No Place for you here peasant'");
                 d.AddOption(new Bribe(200, () => this.unlocked=true, 0.2f));
 

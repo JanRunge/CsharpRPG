@@ -49,10 +49,10 @@ namespace STory
         /// </summary>
         public virtual Boolean OnEnter()
         {
-            
+
             /// This function gets called when the Room is Entered
             /// The magic stuff happens here: sub classes implement their story in this Func
-            Console.WriteLine("you entered " + name);
+            CIO.Print("you entered " + name);
            
             return true;
         }
@@ -61,7 +61,7 @@ namespace STory
         /// </summary>
         public virtual void OnExit()
         {// This function gets called when the Room is Exited
-            Console.WriteLine("you left " + name);
+            CIO.Print("you left " + name);
         }
         /// <summary>
         /// Add a Room by its type to which can be walked from this room
