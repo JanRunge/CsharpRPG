@@ -51,30 +51,31 @@ namespace STory
             createStartRoom();
             CIO.Initialize();
             currentRoom = Room.AllRooms[typeof(GameContent.Rooms.Forest_start)];
-            //player.giveItem(new Potion(10, "Healthpotion", PotionEffect.Heal, Potionsize.Small));
+            player.giveItem(new Potion(10, "Healthpotion", PotionEffect.Heal, Potionsize.Small));
             GlobalCommands.GiveSword();
-            //player.receiveDamage(30, DamageType.Blunt);
+            player.receiveDamage(30, DamageType.Blunt);
 
             while (true)
             {
                 Console.WriteLine("#########################");
-                if (currentRoom.OnEnter())
+                Room r = currentRoom;
+                if (r.OnEnter())
                 {
                     Room nextroom=null;
                     while (nextroom == null)
                     {
                         Optionhandler h;
-                        if (currentRoom.ActivitiesInRoom != null)//print activities if there are any
+                        if (r.ActivitiesInRoom != null)//print activities if there are any
                         {
-                            h = new Optionhandler(currentRoom.name + ". Activities:");
-                            h.AddOptions(currentRoom.ActivitiesInRoom);
+                            h = new Optionhandler(r.name + ". Activities:");
+                            h.AddOptions(r.ActivitiesInRoom);
                             h.AddHeading("Next Rooms:");
                         }
                         else
                         {
-                            h = new Optionhandler(currentRoom.name + ". next room?");
+                            h = new Optionhandler(r.name + ". next room?");
                         }
-                        h.AddOptions(Optionhandler.RoomsToOption(currentRoom.nextRooms));
+                        h.AddOptions(Optionhandler.RoomsToOption(r.nextRooms));
                         Option selectedOpt = h.selectOption();
                         if (selectedOpt.GetType() != typeof(GenericOption))
                         { 
@@ -87,7 +88,8 @@ namespace STory
                 }
                 else
                 {
-                    currentRoom.OnExit();
+                    CIO.Clear();
+                    r.OnExit();
                 }
             }
         }

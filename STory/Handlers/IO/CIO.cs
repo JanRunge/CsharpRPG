@@ -11,10 +11,21 @@ namespace STory
     /// </summary>
     public static class CIO //console input output
     {
+        class output
+        {
+            public string text;
+            public ConsoleColor color;
+
+            public output(string text, ConsoleColor color)
+            {
+                this.text = text;
+                this.color = color;
+            }
+        }
+
         static ConsoleColor userinputColor = ConsoleColor.Blue;
         public static ConsoleColor defaultcolor = ConsoleColor.White;
         static bool debugging = false;
-
         static List<Handlers.IO.Context> lastContexts= new List<Handlers.IO.Context>();
         static Dictionary<string, ConsoleColor> ColorVars = 
             new Dictionary<string, ConsoleColor> { 
@@ -36,59 +47,8 @@ namespace STory
             {"{Yellow}",ConsoleColor.Yellow             },
             {"{Default}",defaultcolor}
             };
+        static List<output> printsSinceLastRead = new List<output>();
         public static Dictionary<ConsoleColor, string> ColorVarsReversed = new Dictionary<ConsoleColor, string>();
-        /// <summary>
-        /// Reads user input and returns the first string which is NOT a global Command
-        /// </summary>
-        public static string ReadLine()
-        {
-            /// <summary>
-            /// Checks if the String is a Global COmmand and Executes it, if true
-            /// </summary>
-            Boolean TestGC(string input)
-            {
-                if (GlobalCommands.existsCheat(input))
-                {
-                    GlobalCommands.executeCheat(input);
-                    return true;
-
-                }
-                return false;
-            }
-            while (true)
-            {
-                Console.ForegroundColor = userinputColor;
-                string input = Console.ReadLine().ToLower();
-                if (!TestGC(input))
-                {
-                    Console.ForegroundColor= defaultcolor;
-                    return input;
-                }
-            }
-        }
-        /// <summary>
-        /// Prints the given string in the Color defined for help-texts
-        /// </summary>
-        public static void PrintHelp(string s)
-        {
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine(s);
-            Console.ForegroundColor = defaultcolor;
-        }
-        /// <summary>
-        /// Prints the given string in the Color defined for story-texts
-        /// </summary>
-        public static void PrintStory(string s)
-        {
-            Console.WriteLine(s);
-        }
-        /// <summary>
-        /// Private print method which wraps Console.writeLine
-        /// </summary>
-        private static void print(string s)
-        {
-            Console.WriteLine(s);
-        }
 
         /// <summary>
         /// Checks if a string contains a placeholder which is associated with a color
@@ -129,17 +89,71 @@ namespace STory
             }
             return new int[2] { lowestIndex, varLength };
         }
+
+
+        /// <summary>
+        /// Reads user input and returns the first string which is NOT a global Command
+        /// </summary>
+        public static string ReadLine()
+        {
+            /// <summary>
+            /// Checks if the String is a Global COmmand and Executes it, if true
+            /// </summary>
+            Boolean TestGC(string input)
+            {
+                if (GlobalCommands.existsCheat(input))
+                {
+                    GlobalCommands.executeCheat(input);
+                    return true;
+
+                }
+                return false;
+            }
+            while (true)
+            {
+                printsSinceLastRead.Clear();
+                Console.ForegroundColor = userinputColor;
+                string input = Console.ReadLine().ToLower();
+                if (!TestGC(input))
+                {
+                    Console.ForegroundColor= defaultcolor;
+                    return input;
+                }
+            }
+        }
+        /// <summary>
+        /// Prints the given string in the Color defined for help-texts
+        /// </summary>
+        public static void PrintHelp(string s)
+        {
+            Print(s, ConsoleColor.Cyan);
+        }
+        /// <summary>
+        /// Prints the given string in the Color defined for story-texts
+        /// </summary>
+        public static void PrintStory(string s)
+        {
+            Print(s, defaultcolor);
+        }
+
         /// <summary>
         /// Prints a String to the Console.
         /// The String may contain a placeholder E.g. {Red}, which will result in all chars after that begin printed in red. 
         /// <para> the conversion from Color to Playceholder can be made through CIO.ColorVarsReversed </para>
         /// </summary>
-        public static void Print(string s)
+        public static void Print(string s, ConsoleColor? TextColor=null, bool addToPrints = true)
         {
-            
+            if (TextColor != null)
+            {
+                Console.ForegroundColor = (ConsoleColor)TextColor;
+            }
+            if (addToPrints)
+            {
+                printsSinceLastRead.Add(new output(s, Console.ForegroundColor));
+            }
             if (!stringContainsColorVar(s))
             {
-                print(s);
+                Console.WriteLine(s);
             }
             else
             {
@@ -170,28 +184,38 @@ namespace STory
                     Console.ForegroundColor = color;
                 }
                 Console.WriteLine();
-                Console.ForegroundColor = defaultcolor;
             }
+            Console.ForegroundColor = defaultcolor;
         }
-        /// <summary>
-        /// Prints a String to the Console in the given Color.
-        /// The String may contain a placeholder E.g. {Red}, which will result in all chars after that begin printed in red. 
-        /// <para> the conversion from Color to Playceholder can be made through CIO.ColorVarsReversed </para>
-        /// </summary>
-        public static void Print(string s, ConsoleColor TextColor)
+        public static void Clear()
         {
-            Console.ForegroundColor=TextColor;
-            Print(s);
-            Console.ForegroundColor=defaultcolor;
+            if (!debugging)
+            {
+                Console.Clear();
+            }
+            else
+            {
+                PrintDebug("CLEAR");
+            }
+            foreach (output o in printsSinceLastRead)
+            {
+                Print(o.text, o.color, false);
+            }
+
+        }
+        public static void PrintDebug(string s)
+        {
+            if (debugging)
+            {
+                Print("<<" + s + ">>", ConsoleColor.Magenta);
+            }
         }
         /// <summary>
         /// Prints the given string in the Color defined for Error-texts
         /// </summary>
         public static void PrintError(string s)
         {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(s);
-            Console.ForegroundColor = defaultcolor;
+            Print(s, ConsoleColor.Red);
         }
         /// <summary>
         /// Initializes the class CIO to make it ready for use
@@ -231,6 +255,7 @@ namespace STory
         /// </summary>
         public static void ReEnterCurrentContext()
         {
+            CIO.Clear();
             if (lastContexts.Count > 0)
             {
                 lastContexts[lastContexts.Count - 1].Enter();
@@ -252,21 +277,7 @@ namespace STory
             return lastContexts[lastContexts.Count - 1];
         }
         //TODO: does the contextstack grow? DO i end them correctly??
-        public static void Clear()
-        {
-            if (!debugging)
-            {
-                Console.Clear();
-            }
-            
-        }
-        public static void PrintDebug(string s)
-        {
-            if (debugging)
-            {
-                Print("<<" + s + ">>", ConsoleColor.Magenta);
-            }
-        }
+        
 
         public static void EnableDebugging()
         {

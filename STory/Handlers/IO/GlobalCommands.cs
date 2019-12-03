@@ -78,7 +78,6 @@ namespace STory
             {
                 CIO.PrintHelp("type i for inventory");
                 CIO.PrintHelp("type Attack to attack an NPC");
-
             }
 
 
@@ -126,7 +125,7 @@ namespace STory
             AddCheat("help", () => Help());
             AddCheat("give sword", () => GiveSword());
             AddCheat("give xp", () => GiveXP());
-            AddCheat("debugging", () => CIO.ToggleDebugging());
+            AddCheat("debug", () => CIO.ToggleDebugging());
         }
     }
 }

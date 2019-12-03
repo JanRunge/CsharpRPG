@@ -212,9 +212,7 @@ namespace STory.GameContent
         {
             while (true)
             {
-                printHeader();
                 GenericOption g = PickCategory();
-                CIO.Clear();
                 if (g == Optionhandler.Exit)
                 {
                     return;
@@ -238,14 +236,14 @@ namespace STory.GameContent
             Option selected = null;
             while (selected != Optionhandler.Exit)
             {
-                printHeader();
-                Optionhandler OH = new Optionhandler(true);
-                OH.setName("Inventory.Item");
                 List<Item> Items = this.GetAllItems(category);
                 if (Items.Count == 0)
                 {
                     return;
                 }
+                printHeader();
+                Optionhandler OH = new Optionhandler(true);
+                OH.setName("Inventory.Item");
                 foreach (Item i in Items)
                 {
                     if (allowItemActions == false)
@@ -283,7 +281,6 @@ namespace STory.GameContent
                 {
                     onItemSelection(((GenericItemOption)selected).getItem());
                 }
-                CIO.Clear();
             }
         }
         /// <summary>
@@ -300,7 +297,7 @@ namespace STory.GameContent
                 GenericOption GO = new GenericOption(i);
                 OH.AddOption(GO);
             }
-            GenericOption selected = (GenericOption)OH.selectOption();
+            GenericOption selected = (GenericOption)OH.selectOption(false);
             
             return selected;
         }
