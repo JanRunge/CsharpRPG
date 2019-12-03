@@ -314,7 +314,11 @@ namespace STory
         /// returns the selected option
         /// </para>
         /// </summary>
-        public virtual Option selectOption() {
+        public virtual Option selectOption()
+        {
+            return selectOption(true);
+        }
+        public virtual Option selectOption(bool reEnterContext) {
             
             if(canExit && !options.ContainsKey("e"))// add the exit command if needed
             {
@@ -340,7 +344,15 @@ namespace STory
                 }
                 userInput = CIO.ReadLine();
             }
-            CIO.EndContext();
+            if (reEnterContext)
+            {
+                CIO.EndContext();
+            }
+            else
+            {
+                CIO.EndContextWithoutReEnter();
+            }
+            //CIO.EndContext();//todo: Check if you should reEnter (In the inventory the Previous room gets reprinted here)
             Option selectedOption = options[userInput];
             if(selectedOption.GetType() == typeof(Multioption))
             {//if the command is linked to a multioption, the Real Option is inside that multioption

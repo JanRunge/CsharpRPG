@@ -21,6 +21,7 @@ namespace STory.GameContent
 
 
         public float health = 100;
+        public int MaxHealth = 100;
         public int Intelligence = 20;
         public int Strength = 20;
 
@@ -167,6 +168,12 @@ namespace STory.GameContent
         public int XPOnDeath()
         {
             throw new NotImplementedException();//this function is unused
+        }
+
+        public void RestoreHealth(float amnt)
+        {
+            CIO.Print("restored "+Math.Min(amnt, MaxHealth - health)+ "health");
+            this.health = Math.Min(MaxHealth, this.health + amnt);
         }
     }
 }

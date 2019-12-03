@@ -54,6 +54,7 @@
     <Compile Include="GameContent\Items\Armors\Gloves.cs" />
     <Compile Include="GameContent\Items\Armors\Greaves.cs" />
     <Compile Include="GameContent\Items\Armors\Helmet.cs" />
+    <Compile Include="GameContent\Items\Potion.cs" />
     <Compile Include="GameContent\Items\Weapon.cs" />
     <Compile Include="GameContent\Items\Weapons\Mace.cs" />
     <Compile Include="GameContent\Items\Weapons\Sword.cs" />
@@ -85,6 +86,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Types\Armortype.cs" />
     <Compile Include="Types\DamageType.cs" />
+    <Compile Include="Types\PotionEffect.cs" />
+    <Compile Include="Types\Potionsize.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

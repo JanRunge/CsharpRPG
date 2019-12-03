@@ -57,7 +57,7 @@ namespace STory.GameContent.Items
         {
             return null;
         }
-        public void Select() { }
+        public virtual void Select() { }
         public String GetCategory()
         {
             return this.category;

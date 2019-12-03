@@ -278,7 +278,7 @@ namespace STory.GameContent
                     }
 
                 }
-                selected = OH.selectOption();
+                selected = OH.selectOption(false);
                 if (selected.GetType() == typeof(GenericItemOption))
                 {
                     onItemSelection(((GenericItemOption)selected).getItem());

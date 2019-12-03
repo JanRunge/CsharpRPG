@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using STory.GameContent;
+using STory.GameContent.Items;
 using STory.GameContent.Items.Armors;
 using STory.GameContent.Minigames;
 using STory.Handlers.Option;
@@ -50,7 +51,9 @@ namespace STory
             createStartRoom();
             CIO.Initialize();
             currentRoom = Room.AllRooms[typeof(GameContent.Rooms.Forest_start)];
+            //player.giveItem(new Potion(10, "Healthpotion", PotionEffect.Heal, Potionsize.Small));
             GlobalCommands.GiveSword();
+            //player.receiveDamage(30, DamageType.Blunt);
 
             while (true)
             {
