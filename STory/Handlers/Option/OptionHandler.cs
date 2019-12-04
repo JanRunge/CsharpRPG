@@ -152,7 +152,7 @@ namespace STory
                 mo.PrefixColor = () => opt.getItem().GetColor();
                 foreach(Option o in opt.getOptions())
                 {
-                    string comm = generateCommand(opt.NameOfItem()+ o.getText());
+                    string comm = generateCommand(opt.NameOfItem()+" "+o.getText());
                     mo.options.Add(comm, o);
                     options.Add(comm, mo);
                     
@@ -244,14 +244,15 @@ namespace STory
                 int indexOfNthSpace(int n, String s)
                 {
                     int c = 0;
-                    int index=-1;
+                    int indexInSubstring=0;
+                    string remainingString = s;
                     while (c < n)
                     {
-                        index = s.IndexOf(" ");
-                        s = s.Substring(index+1);
+                        indexInSubstring = remainingString.IndexOf(" ");
+                        remainingString = remainingString.Substring(indexInSubstring + 1);//cut out everything before the Space and the space itself
                         c++;
                     }
-                    return index;
+                    return s.Length-remainingString.Length-1; //we  cut the subctring after each space, including the nth one. So the difference in length is its index.
                     
                 }
                 int counter = 0;
