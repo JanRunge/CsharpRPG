@@ -50,6 +50,10 @@ namespace STory
         static List<output> printsSinceLastRead = new List<output>();
         public static Dictionary<ConsoleColor, string> ColorVarsReversed = new Dictionary<ConsoleColor, string>();
 
+        public static string getVarForConsoleColor(ConsoleColor c)
+        {
+            return ColorVarsReversed[c];
+        }
         /// <summary>
         /// Checks if a string contains a placeholder which is associated with a color
         /// </summary>
@@ -226,7 +230,7 @@ namespace STory
             GlobalCommands.LoadAll();
             foreach(KeyValuePair<string,ConsoleColor> kvPair in ColorVars)
             {
-                if(kvPair.Value == defaultcolor)
+                if(kvPair.Key == "{Default}")
                 {
                     continue;
                 }

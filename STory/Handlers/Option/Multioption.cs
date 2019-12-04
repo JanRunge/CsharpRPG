@@ -18,10 +18,11 @@ namespace STory.Handlers.Option
         /// </summary>
         public Dictionary<string, Option> options = new Dictionary<string, Option>();
         public string Prefix;
+        public Func<ConsoleColor> PrefixColor;
 
         public ConsoleColor GetColor()
         {
-            throw new InvalidOperationException("should never be called on this object, but rather on the sub-options");
+            return PrefixColor();
         }
 
         public string getPreferredCommand()

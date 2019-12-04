@@ -73,10 +73,12 @@ namespace STory
                 {
                     Multioption opt = (Multioption)kv.Value;
                     if (!processedMultioptions.Contains(opt))
-                    {
+
+                    {//todo: make commands better. should look like this:
+                        //Helgen Helmet Drop[HD] Equip [HE] etc
                         processedMultioptions.Add(opt);
                         string prefix = opt.Prefix;
-                        output = prefix;
+                        output = CIO.getVarForConsoleColor(opt.GetColor())+prefix;
                         foreach (KeyValuePair<string, Option> pair in opt.options)
                         {
                             Option subOpt = pair.Value;
@@ -84,7 +86,7 @@ namespace STory
                             if (subOpt.isAvailable())
                             {
                                 color = subOpt.GetColor();
-                                if (color != CIO.defaultcolor)
+                                if (color != opt.GetColor())
                                 {//only write in a color if it is not default, to save memory & cpu time
                                     output = output + " " + CIO.ColorVarsReversed[color] + subOpt.getText() + "[" + pair.Key + "]";
                                 }
@@ -147,6 +149,7 @@ namespace STory
                 GenericItemOption opt = (GenericItemOption)option;
                 Multioption mo = new Multioption();
                 mo.Prefix = opt.NameOfItem();
+                mo.PrefixColor = () => opt.getItem().GetColor();
                 foreach(Option o in opt.getOptions())
                 {
                     string comm = generateCommand(opt.NameOfItem()+ o.getText());

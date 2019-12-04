@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using STory.Types;
 
 namespace STory.GameContent.Items
-{
+{//todo: re-implement coloring of Equipped armor pieces
     /// <summary>
     /// a piece of armor which can be equipped by the player or NPCs
     /// </summary>
