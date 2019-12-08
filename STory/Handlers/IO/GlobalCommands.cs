@@ -65,7 +65,7 @@ namespace STory
             {
                 return;
             }
-            Attackable enemy = Program.currentRoom.getNPCByName(input);
+            Character enemy = Program.currentRoom.getNPCByName(input);
             Fight f = new Fight(enemy);
             f.startFight();
         }

@@ -7,6 +7,7 @@ using STory.GameContent;
 using STory.GameContent.Items;
 using STory.GameContent.Items.Armors;
 using STory.GameContent.Minigames;
+using STory.GameContent.Spells;
 using STory.Handlers.Option;
 using STory.Types;
 
@@ -51,6 +52,9 @@ namespace STory
             createStartRoom();
             CIO.Initialize();
             currentRoom = Room.AllRooms[typeof(GameContent.Rooms.Forest_start)];
+            GlobalCommands.GiveSword();
+            player.LearnSpell(Spell.Flames);
+
 
             while (true)
             {

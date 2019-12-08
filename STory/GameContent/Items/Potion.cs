@@ -1,4 +1,5 @@
-﻿using STory.Handlers.Option;
+﻿using STory.Handlers.Fight;
+using STory.Handlers.Option;
 using STory.Types;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace STory.GameContent.Items
 {
-    class Potion : Item, Option
+    class Potion : Item, FightAction
     {
         PotionEffect Effect;
         Potionsize size;
@@ -24,5 +25,9 @@ namespace STory.GameContent.Items
             Program.player.RemoveItem(this);
         }
 
+        public void Use(Character user, Character target)
+        {
+            Drink();
+        }
     }
 }

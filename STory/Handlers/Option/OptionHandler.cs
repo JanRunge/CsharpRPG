@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using STory.GameContent.Items;
+using STory.GameContent.Spells;
 using STory.Handlers.Option;
 
 namespace STory
@@ -371,6 +372,15 @@ namespace STory
         {
             List<Option> l = new List<Option>();
             foreach (Item r in Weapons)
+            {
+                l.Add(r);
+            }
+            return l;
+        }
+        public static List<Option> SpellToOption(List<Spell> Spells)
+        {
+            List<Option> l = new List<Option>();
+            foreach (Spell r in Spells)
             {
                 l.Add(r);
             }

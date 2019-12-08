@@ -11,14 +11,11 @@ using STory.Handlers.Option;
 
 namespace STory.GameContent
 {
-    public class NPC : Attackable
+    public class NPC : Character 
     {
-        public float health;
         public Boolean alive = true;
-        public string name;
+
         public Faction faction;
-        protected Inventory inventory = new Inventory();
-        protected int gold = 10;
 
         public NPC() { }
         public NPC(string name, Faction f):this(name,
@@ -47,25 +44,10 @@ namespace STory.GameContent
             equip(h); equip(c); equip(g); equip(gg); equip(b);
             if (w != null)
             {
-                equipWeapon(w);
+                Equip(w);
             }
             this.faction = f;
 
-        }
-        private void equipWeapon(Weapon w)
-        {
-            inventory.Equip(w);
-        }
-        public void ClearInventory()
-        {
-            foreach (Item i in this.inventory.GetAllItems())
-            {
-                inventory.RemoveItem(i);
-            }
-        }
-        public void AddToInventory(List<Item> items)
-        {
-            inventory.AddItems(items);
         }
 
         /// <summary>
@@ -102,63 +84,27 @@ namespace STory.GameContent
                 }
             }
         }
-        /// <summary>
-        /// get the total damagereduction against that damagetype
-        /// </summary>
-        public float getDefense(DamageType d)
-        {
-            return inventory.GetArmorset().getDamageBlock(d);
-        }
-        public string getName() {
-            return this.name;
-        }
+        
         /// <summary>
         /// Attack the NPC with damage amoutn + type. Removes the health after substraction blocked damage
         /// </summary>
-        public void receiveDamage(int amount, DamageType type)
+        override public int receiveDamage(int amount, DamageType type)
         {
-            float dmg;
-            dmg= (float)Math.Round( amount - amount* getDefense(type));
-            this.health -= dmg;
+            int dmg = base.receiveDamage(amount, type);
             CIO.Print(this.name + " lost " + dmg + " HP. " + health + "HP remaining");
             if (health <= 0)
             {
                 this.alive = false;
             }
+            return dmg;
         }
-        /// <summary>
-        /// Attack the target with the equipped weapon
-        /// </summary>
-        public void attack(Attackable target)
-        {
-            target.receiveDamage(inventory.GetEquippedWeapon().damage, inventory.GetEquippedWeapon().damagetype);
-        }
-        public bool isAlive()
+        override public bool isAlive()
         {
             return this.alive;
         }
-        /// <summary>
-        /// returns the amount of experience points the Unit sets free when dying
-        /// </summary>
-        public int XPOnDeath()
+        override public int XPOnDeath()
         {
             return 10;
-        }
-        public void RemoveGold(int amnt)
-        {
-            this.gold -= amnt;
-        }
-        public int GetGold()
-        {
-            return this.gold;
-        }
-        public void AddGold(int amnt)
-        {
-            this.gold+=amnt;
-        }
-        public bool HasGold(int amnt)
-        {
-            return amnt <= gold;
         }
     }
 }

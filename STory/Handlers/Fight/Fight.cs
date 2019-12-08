@@ -7,6 +7,7 @@ using STory.GameContent;
 using STory.GameContent.Items;
 using STory.Handlers.Fight;
 using STory.Handlers.IO;
+using STory.Handlers.Option;
 
 namespace STory.GameContent
 {
@@ -15,21 +16,10 @@ namespace STory.GameContent
     /// </summary>
     class Fight
     {
-        public Attackable Enemy;
-        public Fight(Attackable Enemy)
+        public Character Enemy;
+        public Fight(Character Enemy)
         {
             this.Enemy = Enemy;
-        }
-        /// <summary>
-        /// Deal Damage to the Attackable and Receive Damage from the Attackable
-        /// </summary>
-        public void Attack()
-        {
-            Program.player.attack(Enemy);
-            if(Enemy.isAlive()){
-                Enemy.attack(Program.player);
-            }
-            
         }
         /// <summary>
         /// User and Enemy attack each other until one dies.
@@ -37,9 +27,14 @@ namespace STory.GameContent
         public void startFight()
         {
             //attacks back and forth until someone dies
+            
             while (Enemy.isAlive()){
-                Program.player.Equip(getPlayerWeapon());
-                Attack();
+                FightAction FA = getPlayerWeapon();
+                FA.Use(Program.player, Enemy);
+                if (Enemy.isAlive())
+                {
+                    Enemy.attack(Program.player);
+                }
             }
             CIO.Print("you defeated " + Enemy.getName());
             Program.player.GiveXP(Enemy.XPOnDeath());
@@ -49,10 +44,23 @@ namespace STory.GameContent
         /// <summary>
         /// Let the Player choose his weapon for the next turn
         /// </summary>
-        public Weapon getPlayerWeapon(){
+        public FightAction getPlayerWeapon(){
             Optionhandler oh = new Optionhandler("Choose your weapon");
-            oh.setOptionGenerator(() => Optionhandler.ItemToOption(Program.player.inventory.GetAllItems("Weapons")));
-            return (Weapon)oh.selectOption();
+            oh.setOptionGenerator(()=>getAllOptions());
+            return (FightAction)oh.selectOption();
+        }
+        public List<Option> getAllOptions()
+        {
+
+            List<Option> Weapons = Program.player.inventory.GetAllItems("Weapons").Cast<Option>().ToList();
+            List<Option> Potions = Program.player.inventory.GetAllItems("Potion").Cast<Option>().ToList();
+            List<Option> Spells = Program.player.getAllSpells().Cast<Option>().ToList();//todo make this a submenu
+            List<Option> all = new List<Option>();
+            all.AddRange(Weapons);
+            all.AddRange(Potions);
+            all.AddRange(Spells);
+            return all;
+
         }
     }
 }

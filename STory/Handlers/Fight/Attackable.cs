@@ -10,8 +10,13 @@ namespace STory.Handlers.Fight
     public interface Attackable
     {
         string getName();
-        void receiveDamage(int amount, DamageType type);
+        int receiveDamage(int amount, DamageType type);
         void attack(Attackable a);
+
+        void RemoveMana(int amount);
+        int GetIntelligence();
+        int GetStrength();
+
         Boolean isAlive();
         int XPOnDeath();
     }

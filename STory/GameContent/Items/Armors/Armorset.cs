@@ -31,9 +31,24 @@ namespace STory.GameContent.Items.Armors
             a.equip();
             foreach (DamageType d in DamageType.allDamageTypes())
             {
-                Damageblock[d] += a.getArmor(d);
+                increaseDamageBlock(d, a.getArmor(d));
+            }
+        }
+        private void increaseDamageBlock(DamageType d, float a)
+        {
+            if (Damageblock.ContainsKey(d))
+            {
+                Damageblock[d] += a ;
+            }
+            else
+            {
+                Damageblock[d] = a;
             }
 
+            if (Damageblock[d] <= 0)
+            {
+                Damageblock.Remove(d);
+            }
         }
         public void Unequip(Armor i)
         {
@@ -58,7 +73,7 @@ namespace STory.GameContent.Items.Armors
                 Armors.Remove(key);
                 foreach (DamageType d in DamageType.allDamageTypes())
                 {
-                    Damageblock[d] -= i.getArmor(d);
+                    increaseDamageBlock(d, -i.getArmor(d));
                 }
             }
         }
@@ -68,7 +83,15 @@ namespace STory.GameContent.Items.Armors
         }
         public float getDamageBlock(DamageType d)
         {
-            return Damageblock[d];
+            if (Damageblock.ContainsKey(d))
+            {
+                return Damageblock[d];
+            }
+            else
+            {
+                return 0;
+            }
+            
         }
         public List<Armor> GetAllItems()
         {

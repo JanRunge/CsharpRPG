@@ -68,7 +68,7 @@ namespace STory.GameContent.NPCs
         {
             Program.player.AddGold((int)(i.worth *0.9));
             Inventory.transferItem(Program.player.inventory, this.inventory, i);
-            this.RemoveGold((int)(i.worth * 0.9));
+            this.removeGold((int)(i.worth * 0.9));
         }
         
     }

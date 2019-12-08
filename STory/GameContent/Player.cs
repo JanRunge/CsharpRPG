@@ -12,88 +12,38 @@ using STory.GameContent.NPCs;
 
 namespace STory.GameContent
 {
-    public class Player : Attackable
+    public class Player : Character //todo: implement as Singleton
     {
         public int level=1;
         public int XP=0;
 
-        public float health = 100;
-        int MaxHealth = 100;
-        int Intelligence = 20;
-        int Strength = 20;
         public int MaxCarryWeight = 200;
 
-        public Inventory inventory = new Inventory();
-
-        public void IncreaseStrength(int amount)
-        {
-            Strength += amount;
-            MaxCarryWeight += amount * 10;
-        }
-        public int GetStrength()
-        {
-            return Strength;
-        }
-        public void IncreaseIntelligence(int amount)
-        {
-            Intelligence += amount;
-        }
-        public int GetIntelligence()
-        {
-            return Intelligence;
-        }
-
-        
-
-        public void UnequipWeapon()
-        {
-            this.inventory.UnequipWeapon();
-        }
-        public void Equip(Weapon a)
-        {
-            this.inventory.Equip(a);
-        }
-        public float getDamageMultiplicator(DamageType type)
-        {
-            if (type.isStrengthBased())
-            {
-                return 1+(0.01f * (Strength - 20));
-            }
-            else
-            {
-                return 1+(0.01f * (Intelligence - 20));
-            }
-        }
         public Player(){
             inventory.AddItem(new STory.GameContent.Items.Weapon(0, DamageType.Blunt, 0, 1, "Fists", "Fists"));
+            this.name = "player";
         }
-        public Boolean hasGold(int amount)
+        override public Boolean removeGold(int amnt)
         {
-            return this.inventory.hasGold(amount);
+            CIO.Print("removed " + amnt + " gold");
+            return base.removeGold(amnt);
         }
-        public int getGold()
+        override public void AddGold(int amnt)
         {
-            return this.inventory.getGold();
+            CIO.Print("Received " + amnt + " gold");
+            base.AddGold(amnt);
         }
-        public Boolean removeGold(int amnt)
+        override public void giveItem(Item i)
         {
-            return this.inventory.removeGold(amnt);
+            CIO.Print("you received '" + i.name + "'");
+            base.giveItem(i);
             
         }
-        public void AddGold(int amnt)
+        override public void RemoveItem(Item i)
         {
-            this.inventory.AddGold(amnt);
-            CIO.Print("Received " + amnt + " gold");
-        }
-        public void giveItem(Item i)
-        {
-            this.inventory.AddItem(i);
-            CIO.Print("you received '" + i.name + "'");
-        }
-        public void RemoveItem(Item i)
-        {
-            this.inventory.RemoveItem(i);            
             CIO.Print("removed '" + i.name + "'");
+            base.RemoveItem(i);
+
         }
         
         public void GiveXP(int amount)
@@ -104,7 +54,6 @@ namespace STory.GameContent
             {
                 levelUp();
             }
-
         }
         private void levelUp()
         {
@@ -144,59 +93,42 @@ namespace STory.GameContent
         {
             Func<Item, bool> selectable = i => true;
             Action<Item> onselect = i => m.SellTo(i);
-            Func<Item, bool> available = i => m.HasGold( (int) (i.worth * 0.9));//todo make 0.9 a var/dynamic
+            Func<Item, bool> available = i => m.hasGold( (int) (i.worth * 0.9));//todo make 0.9 a var/dynamic
             Func<Item, string> onNotavailable = i => "the merhcant doesnt have enough gold";
             this.inventory.Open(selectable, onselect,available,onNotavailable);
         }
-        public void EquipArmor(Armor a)
+        override public int receiveDamage(int amount, DamageType type)
         {
-            inventory.Equip(a);
-        }
-        public void unequipArmor(Armor i)
-        {
-            inventory.Unequip(i);
-        }
-        public void receiveDamage(int amount, DamageType type)
-        {
-            float dmg;
-
-            Dictionary<DamageType, float> d = inventory.GetArmorset().getDamageBlock();
-            
-            dmg = amount -(d[type]*amount);
-            this.health -= dmg;
+            int dmg = base.receiveDamage(amount, type);
             CIO.Print(" You lost " + dmg + " HP. " + health + "HP remain");
             if (health <= 0)
             {
                 Program.gameOver();
             }
-        }
-        public void attack(Attackable a)
-        {
-            Weapon w = this.inventory.GetEquippedWeapon();
-            float dmg= w.damage;
-            dmg = dmg * getDamageMultiplicator(w.damagetype);
-            a.receiveDamage((int)Math.Floor(dmg) , w.damagetype);
-        }
-        public string getName()
-        {
-            return "player";
-
+            return dmg;
         }
 
-        public bool isAlive()
+        override public bool isAlive()
         {
             return true;
         }
 
-        public int XPOnDeath()
+        override public int XPOnDeath()
         {
             throw new NotImplementedException();//this function is unused
         }
 
-        public void RestoreHealth(float amnt)
+        override public int RestoreHealth(float amnt)
         {
-            CIO.Print("restored "+Math.Min(amnt, MaxHealth - health)+ "health");
-            this.health = Math.Min(MaxHealth, this.health + amnt);
+            int restoredamnt = base.RestoreHealth(amnt);
+            CIO.Print("restored "+ restoredamnt + "health");
+            return restoredamnt;
         }
+        override public void RemoveMana(int amount)
+        {
+            base.RemoveMana(amount);
+            CIO.Print("removed " + amount + "mana");
+        }
+
     }
 }

@@ -43,11 +43,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameContent\Character.cs" />
     <Compile Include="GameContent\Dialog\Bribe.cs" />
     <Compile Include="GameContent\Faction.cs" />
     <Compile Include="GameContent\Inventory.cs" />
     <Compile Include="GameContent\Items\Item.cs" />
-    <Compile Include="GameContent\Items\Armor.cs" />
+    <Compile Include="GameContent\Items\Armors\Armor.cs" />
     <Compile Include="GameContent\Items\Armors\Armorset.cs" />
     <Compile Include="GameContent\Items\Armors\Boots.cs" />
     <Compile Include="GameContent\Items\Armors\cuirass.cs" />
@@ -55,7 +56,7 @@
     <Compile Include="GameContent\Items\Armors\Greaves.cs" />
     <Compile Include="GameContent\Items\Armors\Helmet.cs" />
     <Compile Include="GameContent\Items\Potion.cs" />
-    <Compile Include="GameContent\Items\Weapon.cs" />
+    <Compile Include="GameContent\Items\Weapons\Weapon.cs" />
     <Compile Include="GameContent\Items\Weapons\Mace.cs" />
     <Compile Include="GameContent\Items\Weapons\Sword.cs" />
     <Compile Include="GameContent\Minigames\Dice.cs" />
@@ -71,8 +72,12 @@
     <Compile Include="GameContent\Rooms\Palast.cs" />
     <Compile Include="GameContent\Rooms\Tavern.cs" />
     <Compile Include="GameContent\Rooms\Town.cs" />
+    <Compile Include="GameContent\SpellBook.cs" />
+    <Compile Include="GameContent\Spells\Damagespell.cs" />
+    <Compile Include="GameContent\Spells\Spell.cs" />
     <Compile Include="Handlers\Fight\Attackable.cs" />
     <Compile Include="Handlers\Fight\Fight.cs" />
+    <Compile Include="Handlers\Fight\FightAction.cs" />
     <Compile Include="Handlers\IO\CIO.cs" />
     <Compile Include="Handlers\IO\Context.cs" />
     <Compile Include="Handlers\IO\GlobalCommands.cs" />
@@ -88,9 +93,11 @@
     <Compile Include="Types\DamageType.cs" />
     <Compile Include="Types\PotionEffect.cs" />
     <Compile Include="Types\Potionsize.cs" />
+    <Compile Include="Types\SpellType.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

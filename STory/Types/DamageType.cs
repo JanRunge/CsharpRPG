@@ -28,6 +28,7 @@ namespace STory.Types
         public static DamageType Blunt = new DamageType("Blunt",true);
         public static DamageType Slash = new DamageType("Slash",true);
         public static DamageType Poke = new DamageType("Poke",true);
+        public static DamageType Fire = new DamageType("Fire", false);
         public static List<DamageType> allDamageTypes()
         {
             return new List<DamageType> { Blunt, Slash, Poke };
