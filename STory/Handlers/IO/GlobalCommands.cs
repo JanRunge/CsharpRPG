@@ -77,6 +77,7 @@ namespace STory
             else
             {
                 CIO.PrintHelp("type i for inventory");
+                CIO.PrintHelp("type s for Spellbook");
                 CIO.PrintHelp("type Attack to attack an NPC");
             }
 
@@ -120,6 +121,7 @@ namespace STory
             }
             AddCheat("give gold", () => GlobalCommands.GiveGold());
             AddCheat("i", () => Program.player.OpenInventory());
+            AddCheat("s", () => Program.player.OpenSpellbook());
             AddCheat("Attack", () => Attack());
             AddCheat("h", () => Help());
             AddCheat("help", () => Help());

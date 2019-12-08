@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace STory.Types
-{
+{//todo: move types into their folders?
     public class Armortype
     {
         string description;

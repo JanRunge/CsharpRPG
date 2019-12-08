@@ -24,7 +24,7 @@ namespace STory.GameContent
 
         public Inventory inventory = new Inventory();
 
-        SpellBook spellBook = new SpellBook();
+        protected SpellBook spellBook = new SpellBook();
 
 
         public void IncreaseStrength(int amount)

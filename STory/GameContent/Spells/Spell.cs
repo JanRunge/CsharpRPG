@@ -56,8 +56,8 @@ namespace STory.GameContent.Spells
             }
         }
 
-        public bool isAvailable()
-        {
+        public virtual bool isAvailable()
+        {//todo: certain spells should only be available in combat
             return Program.player.HasMana(this.Cost);
         }
 

@@ -97,6 +97,10 @@ namespace STory.GameContent
             Func<Item, string> onNotavailable = i => "the merhcant doesnt have enough gold";
             this.inventory.Open(selectable, onselect,available,onNotavailable);
         }
+        public void OpenSpellbook()
+        {
+            this.spellBook.Open();
+        }
         override public int receiveDamage(int amount, DamageType type)
         {
             int dmg = base.receiveDamage(amount, type);
