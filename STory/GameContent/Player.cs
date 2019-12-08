@@ -14,18 +14,45 @@ namespace STory.GameContent
 {
     public class Player : Attackable
     {
-        int gold;
         public int level=1;
         public int XP=0;
-        public Items.Weapon Weapon;
-
 
         public float health = 100;
-        public int MaxHealth = 100;
-        public int Intelligence = 20;
-        public int Strength = 20;
+        int MaxHealth = 100;
+        int Intelligence = 20;
+        int Strength = 20;
+        public int MaxCarryWeight = 200;
 
         public Inventory inventory = new Inventory();
+
+        public void IncreaseStrength(int amount)
+        {
+            Strength += amount;
+            MaxCarryWeight += amount * 10;
+        }
+        public int GetStrength()
+        {
+            return Strength;
+        }
+        public void IncreaseIntelligence(int amount)
+        {
+            Intelligence += amount;
+        }
+        public int GetIntelligence()
+        {
+            return Intelligence;
+        }
+
+        
+
+        public void UnequipWeapon()
+        {
+            this.inventory.UnequipWeapon();
+        }
+        public void Equip(Weapon a)
+        {
+            this.inventory.Equip(a);
+        }
         public float getDamageMultiplicator(DamageType type)
         {
             if (type.isStrengthBased())
@@ -38,29 +65,24 @@ namespace STory.GameContent
             }
         }
         public Player(){
-            STory.GameContent.Items.Weapon w = new STory.GameContent.Items.Weapon(0,DamageType.Blunt,0,1,"Fists","Fists");
-            inventory.AddItem(w);
+            inventory.AddItem(new STory.GameContent.Items.Weapon(0, DamageType.Blunt, 0, 1, "Fists", "Fists"));
         }
         public Boolean hasGold(int amount)
         {
-            return this.gold >= amount;
+            return this.inventory.hasGold(amount);
         }
         public int getGold()
         {
-            return gold;
+            return this.inventory.getGold();
         }
         public Boolean removeGold(int amnt)
         {
-            if (hasGold(amnt))
-            {
-                this.gold = this.gold - amnt;
-                return true;
-            }
-            return false;
+            return this.inventory.removeGold(amnt);
+            
         }
         public void AddGold(int amnt)
         {
-            this.gold += amnt;
+            this.inventory.AddGold(amnt);
             CIO.Print("Received " + amnt + " gold");
         }
         public void giveItem(Item i)
@@ -98,11 +120,11 @@ namespace STory.GameContent
            
             if (result== oStrength)
             {
-                this.Strength += 1;
+                this.IncreaseStrength(1);
 
             }else if (result == oIntelligence)
             {
-                this.Intelligence += 1;
+                this.IncreaseIntelligence(1);
             }
         }
         public void OpenInventory()
@@ -150,9 +172,10 @@ namespace STory.GameContent
         }
         public void attack(Attackable a)
         {
-            float dmg= Weapon.damage;
-            dmg = dmg * getDamageMultiplicator(Weapon.damagetype);
-            a.receiveDamage((int)Math.Floor(dmg) , Weapon.damagetype);
+            Weapon w = this.inventory.GetEquippedWeapon();
+            float dmg= w.damage;
+            dmg = dmg * getDamageMultiplicator(w.damagetype);
+            a.receiveDamage((int)Math.Floor(dmg) , w.damagetype);
         }
         public string getName()
         {

@@ -51,9 +51,6 @@ namespace STory
             createStartRoom();
             CIO.Initialize();
             currentRoom = Room.AllRooms[typeof(GameContent.Rooms.Forest_start)];
-            player.giveItem(new Potion(10, "Healthpotion", PotionEffect.Heal, Potionsize.Small));
-            GlobalCommands.GiveSword();
-            player.receiveDamage(30, DamageType.Blunt);
 
             while (true)
             {
@@ -77,7 +74,7 @@ namespace STory
                         }
                         h.AddOptions(Optionhandler.RoomsToOption(r.nextRooms));
                         Option selectedOpt = h.selectOption();
-                        if (selectedOpt.GetType() != typeof(GenericOption))
+                        if (selectedOpt.GetType().IsSubclassOf(typeof(Room)))
                         { 
                             nextroom = (Room)selectedOpt;
                         }

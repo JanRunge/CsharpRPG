@@ -48,7 +48,7 @@ namespace STory
             {"{Default}",defaultcolor}
             };
         static List<output> printsSinceLastRead = new List<output>();
-        public static Dictionary<ConsoleColor, string> ColorVarsReversed = new Dictionary<ConsoleColor, string>();
+        static Dictionary<ConsoleColor, string> ColorVarsReversed = new Dictionary<ConsoleColor, string>();
 
         public static string getVarForConsoleColor(ConsoleColor c)
         {
@@ -124,6 +124,37 @@ namespace STory
                     return input;
                 }
             }
+        }
+        public static int ReadLineInt()
+        {
+            string input; 
+            int parsedInt=-1234321;
+            bool parsedSuccessfully=false;
+            while (!parsedSuccessfully)
+            {
+                input = ReadLine();
+                parsedSuccessfully = Int32.TryParse(input, out parsedInt);
+                if (!parsedSuccessfully)
+                {
+                    PrintError("Please enter a Number");
+                }
+            }
+            return parsedInt;
+
+        }
+        public static void PrintDebug(string s)
+        {
+            if (debugging)
+            {
+                Print("<<" + s + ">>", ConsoleColor.Magenta);
+            }
+        }
+        /// <summary>
+        /// Prints the given string in the Color defined for Error-texts
+        /// </summary>
+        public static void PrintError(string s)
+        {
+            Print(s, ConsoleColor.Red);
         }
         /// <summary>
         /// Prints the given string in the Color defined for help-texts
@@ -207,20 +238,7 @@ namespace STory
             }
 
         }
-        public static void PrintDebug(string s)
-        {
-            if (debugging)
-            {
-                Print("<<" + s + ">>", ConsoleColor.Magenta);
-            }
-        }
-        /// <summary>
-        /// Prints the given string in the Color defined for Error-texts
-        /// </summary>
-        public static void PrintError(string s)
-        {
-            Print(s, ConsoleColor.Red);
-        }
+       
         /// <summary>
         /// Initializes the class CIO to make it ready for use
         /// </summary>

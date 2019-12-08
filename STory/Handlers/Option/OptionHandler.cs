@@ -20,12 +20,7 @@ namespace STory
         string name="";
         Boolean canExit;
 
-
-        public Optionhandler(string text):this(text,false)
-        {
-           
-        }
-        public Optionhandler(string text, Boolean canExit)
+        public Optionhandler(string text="", Boolean canExit=false)
         {
             this.text = text;
             this.canExit = canExit;
@@ -34,11 +29,6 @@ namespace STory
         {
             
         }
-        public Optionhandler(): this(false)
-        {
-
-        }
-
         public void setName(String t)
         {
             name = t;
@@ -74,11 +64,10 @@ namespace STory
                     Multioption opt = (Multioption)kv.Value;
                     if (!processedMultioptions.Contains(opt))
 
-                    {//todo: make commands better. should look like this:
-                        //Helgen Helmet Drop[HD] Equip [HE] etc
+                    {
                         processedMultioptions.Add(opt);
                         string prefix = opt.Prefix;
-                        output = CIO.getVarForConsoleColor(opt.GetColor())+prefix;
+                        output = CIO.getVarForConsoleColor(opt.GetColor())+prefix+":";
                         foreach (KeyValuePair<string, Option> pair in opt.options)
                         {
                             Option subOpt = pair.Value;
@@ -88,7 +77,7 @@ namespace STory
                                 color = subOpt.GetColor();
                                 if (color != opt.GetColor())
                                 {//only write in a color if it is not default, to save memory & cpu time
-                                    output = output + " " + CIO.ColorVarsReversed[color] + subOpt.getText() + "[" + pair.Key + "]";
+                                    output = output + " " + CIO.getVarForConsoleColor(color) + subOpt.getText() + "[" + pair.Key + "]";
                                 }
                                 else
                                 {
@@ -97,7 +86,7 @@ namespace STory
                             }
                             else
                             {
-                                output = output + " {Red}" + subOpt.getText() + "[" + pair.Key + "]{Default}";
+                                output = output + "{Red} " + subOpt.getText() + "[" + pair.Key + "]{Default}";
                             }
                         }
                     }
@@ -287,7 +276,7 @@ namespace STory
             }
             else
             {
-                CIO.Print("not available");
+                CIO.PrintError("not available");
             }
             
         }
@@ -344,7 +333,7 @@ namespace STory
                 { 
                     printNotAvailable(options[userInput]);//print the specific message of that option
                 } else {
-                    CIO.Print("invalid option");
+                    CIO.PrintError("invalid option");
                 }
                 userInput = CIO.ReadLine();
             }

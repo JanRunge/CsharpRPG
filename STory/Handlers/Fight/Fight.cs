@@ -38,7 +38,7 @@ namespace STory.GameContent
         {
             //attacks back and forth until someone dies
             while (Enemy.isAlive()){
-                Program.player.Weapon = getPlayerWeapon();
+                Program.player.Equip(getPlayerWeapon());
                 Attack();
             }
             CIO.Print("you defeated " + Enemy.getName());

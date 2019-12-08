@@ -17,27 +17,23 @@ namespace STory.GameContent.Minigames
         }
         public void AskPlayerForStake()
         {
-            Optionhandler oh = new Optionhandler("choose the stakes", true);
-            GenericOption opt = new GenericOption("5g");
-            opt.setPreferredCommand("a");//todo preferredcommand is not used!
-            opt.AddExecutionAction(() => this.SetStake(10));
-            oh.AddOption(opt);
-
-            opt = new GenericOption("10g");
-            opt.setPreferredCommand("b");
-            opt.AddExecutionAction(() => this.SetStake(10));
-            oh.AddOption(opt);
-
-            opt = new GenericOption("50g");
-            opt.setPreferredCommand("c");
-            opt.AddExecutionAction(() => this.SetStake(10));
-            oh.AddOption(opt);
-
-            opt = new GenericOption("100g");
-            opt.setPreferredCommand("d");
-            opt.AddExecutionAction(() => this.SetStake(10));
-            oh.AddOption(opt);
-            oh.selectOption();
+            //todo: implement a possibility to exit
+            CIO.StartNewContext(new Handlers.IO.Context("TODO THIS PARAM IS NOT DOCUMENTED WELL"));
+            while (this.stake == -1)
+            {
+                CIO.Print("How Much do you wish to bet?");
+                int stake = CIO.ReadLineInt();
+                if (!Program.player.hasGold(stake))
+                {
+                    CIO.PrintError("you dont have enough gold!");
+                }
+                else
+                {
+                    this.stake = stake;
+                }
+            }
+            
+            CIO.EndContext();
         }
         
         public abstract void Play();

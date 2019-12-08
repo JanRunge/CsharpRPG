@@ -19,7 +19,6 @@ namespace STory.GameContent
         public Faction faction;
         protected Inventory inventory = new Inventory();
         protected int gold = 10;
-        Weapon weapon;
 
         public NPC() { }
         public NPC(string name, Faction f):this(name,
@@ -55,11 +54,7 @@ namespace STory.GameContent
         }
         private void equipWeapon(Weapon w)
         {
-            if (!inventory.ContainsItem(w))
-            {
-                inventory.AddItem(w);
-            }
-            this.weapon = w;
+            inventory.Equip(w);
         }
         public void ClearInventory()
         {
@@ -136,7 +131,7 @@ namespace STory.GameContent
         /// </summary>
         public void attack(Attackable target)
         {
-            target.receiveDamage(weapon.damage, weapon.damagetype);
+            target.receiveDamage(inventory.GetEquippedWeapon().damage, inventory.GetEquippedWeapon().damagetype);
         }
         public bool isAlive()
         {

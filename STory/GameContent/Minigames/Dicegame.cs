@@ -29,11 +29,7 @@ namespace STory.GameContent.Minigames
              * 0,056*200 =11,2
              * =97,4
              */
-            if (!Program.player.hasGold(stake))
-            {
-                CIO.Print("you dont have enough gold!");
-                return;
-            }
+            
             Program.player.removeGold(stake);
 
             int sum = 0;    //the sum of the dices.
@@ -58,12 +54,13 @@ namespace STory.GameContent.Minigames
                 {
                     returnvalue = stake * 2;
                 }
+                Program.player.AddGold(returnvalue);
             }
             else
             {
                 CIO.Print("You lost.");
             }
-            Program.player.AddGold(returnvalue);
+            
 
 
         }

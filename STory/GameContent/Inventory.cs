@@ -24,10 +24,12 @@ namespace STory.GameContent
         /// The CUrrently equipped armor
         /// </summary>
         Armorset armorset = new Armorset();
+        Weapon equippedWeapon;
         /// <summary>
         /// total weight of the inventory
         /// </summary>
-        public int weight;
+        public int weight;//todo use this
+        public int gold;
         /// <summary>
         /// get the Currently equipped armorset
         /// </summary>
@@ -159,12 +161,53 @@ namespace STory.GameContent
             armorset.Equip(a);
         }
         /// <summary>
+        /// Unequip a Weapon
+        /// </summary>
+        public void UnequipWeapon()
+        {
+            this.equippedWeapon = null;
+        }
+        public void Equip(Weapon a)
+        {
+            if (!this.ContainsItem(a))
+            {
+                this.AddItem(a);
+            }
+            this.equippedWeapon = a;
+        }
+        public Weapon GetEquippedWeapon()
+        {
+            return this.equippedWeapon;
+        }
+        /// <summary>
         /// Unequip a piece of Armor
         /// </summary>
         public void Unequip(Armor a)
         {
-             armorset.Unequip(a);
+            armorset.Unequip(a);
         }
+        public Boolean removeGold(int amnt)
+        {
+            if (hasGold(amnt))
+            {
+                this.gold = this.gold - amnt;
+                return true;
+            }
+            return false;
+        }
+        public void AddGold(int amnt)
+        {
+            this.gold += amnt;
+        }
+        public Boolean hasGold(int amount)
+        {
+            return this.gold >= amount;
+        }
+        public int getGold()
+        {
+            return this.gold;
+        }
+
         /// <summary>
         /// Open the Inventory to navigate within it. The Actions defined within Items are NOT available
         /// <para>
@@ -308,9 +351,7 @@ namespace STory.GameContent
         {
             CIO.Clear();
             CIO.Print("########Inventory:########");
-            //CIO.Print(this.getGold() + "gold");//todo
+            CIO.Print(this.getGold() + " gold");
         }
-
-
     }
 }
