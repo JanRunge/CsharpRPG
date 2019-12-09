@@ -41,26 +41,36 @@ namespace STory.GameContent
             
 
         }
-        /// <summary>
-        /// Let the Player choose his weapon for the next turn
-        /// </summary>
-        public FightAction getPlayerWeapon(){
-            Optionhandler oh = new Optionhandler("Choose your weapon");
-            oh.setOptionGenerator(()=>getAllOptions());
-            return (FightAction)oh.selectOption();
-        }
-        public List<Option> getAllOptions()
+        public FightAction getPlayerWeapon()
         {
+            while (true)
+            {
+                Optionhandler ohCategory = new Optionhandler("Choose your next Action");
+                ohCategory.AddOption(new GenericOption("Weapons"));
+                ohCategory.AddOption(new GenericOption("Potion"));
+                ohCategory.AddOption(new GenericOption("Spell"));//todo: check if items are in the option beforehand
+                GenericOption selectedCategory = (GenericOption)ohCategory.selectOption();
+                List<Option> optionsInTheCategory;
+                if (selectedCategory.name == "Spell")
+                {
+                    optionsInTheCategory = Player.getInstance().getAllSpells().Cast<Option>().ToList();
+                }
+                else
+                {
+                    optionsInTheCategory = Player.getInstance().inventory.GetAllItems(selectedCategory.name).Cast<Option>().ToList();
+                }
+                Optionhandler ohItem = new Optionhandler("choose your " + selectedCategory.name, true);
+                ohItem.AddOptions(optionsInTheCategory);
+                Option selected = ohItem.selectOption();
+                if (selected != Optionhandler.Exit)
+                { 
+                   return (FightAction)selected;
+                }
+            }
+            
 
-            List<Option> Weapons = Player.getInstance().inventory.GetAllItems("Weapons").Cast<Option>().ToList();
-            List<Option> Potions = Player.getInstance().inventory.GetAllItems("Potion").Cast<Option>().ToList();
-            List<Option> Spells = Player.getInstance().getAllSpells().Cast<Option>().ToList();//todo make this a submenu
-            List<Option> all = new List<Option>();
-            all.AddRange(Weapons);
-            all.AddRange(Potions);
-            all.AddRange(Spells);
-            return all;
 
         }
+
     }
 }
