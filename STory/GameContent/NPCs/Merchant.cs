@@ -44,7 +44,7 @@ namespace STory.GameContent.NPCs
             opt.AddExecutionAction(this.OpenInventoryForTrade);
             oh.AddOption(opt);
             opt = new GenericOption("Sell");
-            opt.AddExecutionAction(()=>Program.player.OpenInventoryForTrade(this));
+            opt.AddExecutionAction(()=>Player.getInstance().OpenInventoryForTrade(this));
             oh.AddOption(opt);
 
             while (selectedOption != Optionhandler.Exit)
@@ -57,8 +57,8 @@ namespace STory.GameContent.NPCs
         /// </summary>
         public void BuyFrom(Item i)
         {
-            Program.player.removeGold((int) (i.worth * 1.1));
-            Inventory.transferItem(this.inventory, Program.player.inventory, i);
+            Player.getInstance().removeGold((int) (i.worth * 1.1));
+            Inventory.transferItem(this.inventory, Player.getInstance().inventory, i);
             this.AddGold((int)(i.worth * 1.1));
         }
         /// <summary>
@@ -66,8 +66,8 @@ namespace STory.GameContent.NPCs
         /// </summary>
         public void SellTo(Item i)
         {
-            Program.player.AddGold((int)(i.worth *0.9));
-            Inventory.transferItem(Program.player.inventory, this.inventory, i);
+            Player.getInstance().AddGold((int)(i.worth *0.9));
+            Inventory.transferItem(Player.getInstance().inventory, this.inventory, i);
             this.removeGold((int)(i.worth * 0.9));
         }
         

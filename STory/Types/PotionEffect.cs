@@ -1,4 +1,5 @@
-﻿using System;
+﻿using STory.GameContent;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -32,7 +33,7 @@ namespace STory.Types
         {
             action(EffectAmplifier[size]);
         }
-        public static PotionEffect Heal = new PotionEffect((multiplicator) => Program.player.RestoreHealth(multiplicator * 20), "Heal");
+        public static PotionEffect Heal = new PotionEffect((multiplicator) => Player.getInstance().RestoreHealth(multiplicator * 20), "Heal");
 
     }
 }

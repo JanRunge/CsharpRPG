@@ -30,14 +30,14 @@ namespace STory.GameContent
             
             while (Enemy.isAlive()){
                 FightAction FA = getPlayerWeapon();
-                FA.Use(Program.player, Enemy);
+                FA.Use(Player.getInstance(), Enemy);
                 if (Enemy.isAlive())
                 {
-                    Enemy.attack(Program.player);
+                    Enemy.attack(Player.getInstance());
                 }
             }
             CIO.Print("you defeated " + Enemy.getName());
-            Program.player.GiveXP(Enemy.XPOnDeath());
+            Player.getInstance().GiveXP(Enemy.XPOnDeath());
             
 
         }
@@ -52,9 +52,9 @@ namespace STory.GameContent
         public List<Option> getAllOptions()
         {
 
-            List<Option> Weapons = Program.player.inventory.GetAllItems("Weapons").Cast<Option>().ToList();
-            List<Option> Potions = Program.player.inventory.GetAllItems("Potion").Cast<Option>().ToList();
-            List<Option> Spells = Program.player.getAllSpells().Cast<Option>().ToList();//todo make this a submenu
+            List<Option> Weapons = Player.getInstance().inventory.GetAllItems("Weapons").Cast<Option>().ToList();
+            List<Option> Potions = Player.getInstance().inventory.GetAllItems("Potion").Cast<Option>().ToList();
+            List<Option> Spells = Player.getInstance().getAllSpells().Cast<Option>().ToList();//todo make this a submenu
             List<Option> all = new List<Option>();
             all.AddRange(Weapons);
             all.AddRange(Potions);

@@ -23,7 +23,7 @@ namespace STory.GameContent.Minigames
             {
                 CIO.Print("How Much do you wish to bet?");
                 int stake = CIO.ReadLineInt();
-                if (!Program.player.hasGold(stake))
+                if (!Player.getInstance().hasGold(stake))
                 {
                     CIO.PrintError("you dont have enough gold!");
                 }

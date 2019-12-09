@@ -1,4 +1,5 @@
-﻿using System;
+﻿using STory.GameContent;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,8 +16,8 @@ namespace STory
         {
             this.AddTryAction(() => tryBribe(chance));
             this.AddExecutionAction(a);
-            this.SetAvailable(() => Program.player.hasGold(Cost));
-            this.AddExecutionAction(() => Program.player.removeGold(Cost));
+            this.SetAvailable(() => Player.getInstance().hasGold(Cost));
+            this.AddExecutionAction(() => Player.getInstance().removeGold(Cost));
         }
         public override void onNotAvailable()
         {

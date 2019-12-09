@@ -21,7 +21,7 @@ namespace STory.GameContent.Items
         {
             this.armorvals = Armorvals;
             type = t;
-            actions.Add(new GenericOption("equip", () => Program.player.EquipArmor(this)));
+            actions.Add(new GenericOption("equip", () => Player.getInstance().EquipArmor(this)));
 
         }
         public Armor(float slashArmor, float bluntarmor, float pokearmor, Armortype t, int weight, int worth, string name)
@@ -69,7 +69,7 @@ namespace STory.GameContent.Items
             {
                 return ConsoleColor.DarkYellow;
             }
-            else if(this.IsBetterThan(Program.player.inventory.GetArmorset().getItem(this.getArmortype())))
+            else if(this.IsBetterThan(Player.getInstance().inventory.GetArmorset().getItem(this.getArmortype())))
             {
                 return ConsoleColor.Green;
             }

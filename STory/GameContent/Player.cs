@@ -12,14 +12,23 @@ using STory.GameContent.NPCs;
 
 namespace STory.GameContent
 {
-    public class Player : Character //todo: implement as Singleton
+    public class Player : Character //Singleton
     {
         public int level=1;
         public int XP=0;
-
         public int MaxCarryWeight = 200;
 
-        public Player(){
+        private static Player instance;
+        public static Player getInstance()
+        {
+            if (instance == null)
+            {
+                instance = new Player();
+            }
+            return instance;
+        }
+
+        Player(){
             inventory.AddItem(new STory.GameContent.Items.Weapon(0, DamageType.Blunt, 0, 1, "Fists", "Fists"));
             this.name = "player";
         }

@@ -23,7 +23,7 @@ namespace STory.GameContent.Items
             this.worth = worth;
             this.name = name;
             this.category = category;
-            actions = new List<GenericOption> { new GenericOption("Drop", () => Program.player.inventory.RemoveItem(this)) };
+            actions = new List<GenericOption> { new GenericOption("Drop", () => Player.getInstance().inventory.RemoveItem(this)) };
         }
         //todo: refactor all these getText functions
         public virtual string getDescription()

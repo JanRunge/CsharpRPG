@@ -75,12 +75,12 @@ namespace STory.GameContent
                 {
                     foreach (Item i in allitems)
                     {
-                        Inventory.transferItem(this.inventory, Program.player.inventory, i);
+                        Inventory.transferItem(this.inventory, Player.getInstance().inventory, i);
                     }
                 }
                 else
                 {
-                    Inventory.transferItem(this.inventory, Program.player.inventory, (Item)selectedOption);
+                    Inventory.transferItem(this.inventory, Player.getInstance().inventory, (Item)selectedOption);
                 }
             }
         }

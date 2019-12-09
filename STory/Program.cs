@@ -47,7 +47,7 @@ namespace STory
 
         static void Main(string[] args)
         {
-            player = new Player();
+            player = Player.getInstance();
             
             createStartRoom();
             CIO.Initialize();

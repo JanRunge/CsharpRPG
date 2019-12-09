@@ -30,7 +30,7 @@ namespace STory.GameContent.Minigames
              * =97,4
              */
             
-            Program.player.removeGold(stake);
+            Player.getInstance().removeGold(stake);
 
             int sum = 0;    //the sum of the dices.
             int winningSum = 8;// the number the dices have to reach
@@ -54,7 +54,7 @@ namespace STory.GameContent.Minigames
                 {
                     returnvalue = stake * 2;
                 }
-                Program.player.AddGold(returnvalue);
+                Player.getInstance().AddGold(returnvalue);
             }
             else
             {

@@ -32,7 +32,7 @@ namespace STory
                 }
                 Int32.TryParse(input, out amount);
             }
-            Program.player.AddGold(amount);
+            Player.getInstance().AddGold(amount);
             CIO.EndContextWithoutReEnter();
 
         }
@@ -49,13 +49,13 @@ namespace STory
                 }
                 Int32.TryParse(input, out amount);
             }
-            Program.player.GiveXP(amount);
+            Player.getInstance().GiveXP(amount);
         }
         public static void GiveSword()
         {
-            Program.player.giveItem(new Sword(10, 10, 30, "kauldruns knife"));
+            Player.getInstance().giveItem(new Sword(10, 10, 30, "kauldruns knife"));
             Helmet he = new Helmet(0.2f, 0.2f, 0.2f, 10, 15, "Helgen helmet");
-            Program.player.giveItem(he);
+            Player.getInstance().giveItem(he);
 
         }
         public static void Attack() {
@@ -120,8 +120,8 @@ namespace STory
                 }
             }
             AddCheat("give gold", () => GlobalCommands.GiveGold());
-            AddCheat("i", () => Program.player.OpenInventory());
-            AddCheat("s", () => Program.player.OpenSpellbook());
+            AddCheat("i", () => Player.getInstance().OpenInventory());
+            AddCheat("s", () => Player.getInstance().OpenSpellbook());
             AddCheat("Attack", () => Attack());
             AddCheat("h", () => Help());
             AddCheat("help", () => Help());

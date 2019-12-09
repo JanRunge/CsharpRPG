@@ -45,20 +45,15 @@ namespace STory.GameContent.Spells
         }
 
         public ConsoleColor GetColor()
-        {//todo check for items that reduce mana
-            if (isAvailable())
-            {
-                return CIO.defaultcolor;
-            }
-            else
-            {
-                return ConsoleColor.Red;
-            }
+        {
+            return CIO.defaultcolor;
+            
         }
 
         public virtual bool isAvailable()
         {//todo: certain spells should only be available in combat
-            return Program.player.HasMana(this.Cost);
+            //todo check for items that reduce mana
+            return Player.getInstance().HasMana(this.Cost);
         }
 
         public string getPreferredCommand()
@@ -68,7 +63,7 @@ namespace STory.GameContent.Spells
 
         public void Select()//todo it makes no sense that items define waht should happen when they are selected
         {
-            Program.player.EquipSpell(this);
+            Player.getInstance().EquipSpell(this);
         }
 
         public void Use(Character user, Character target)

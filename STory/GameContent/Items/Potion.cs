@@ -22,7 +22,7 @@ namespace STory.GameContent.Items
         public void Drink()
         {//todo: set a breakpoint here to see the context switches causing problems
             Effect.startEffect(this.size);
-            Program.player.RemoveItem(this);
+            Player.getInstance().RemoveItem(this);
         }
 
         public void Use(Character user, Character target)
