@@ -164,5 +164,10 @@ namespace STory.GameContent
         {
             return this.spellBook.getSpells(t);
         }
+        public int calculateCost(Spell spell)
+        {   //todo: check for special Items
+            return spell.GetCost();
+        }
+
     }
 }

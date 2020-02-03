@@ -125,7 +125,7 @@ namespace STory
                 }
             }
         }
-        public static int ReadLineInt()
+        public static int ReadLineInt(bool canExit=true)
         {
             string input; 
             int parsedInt=-1234321;
@@ -140,7 +140,6 @@ namespace STory
                 }
             }
             return parsedInt;
-
         }
         public static void PrintDebug(string s)
         {
@@ -298,7 +297,6 @@ namespace STory
         {
             return lastContexts[lastContexts.Count - 1];
         }
-        //TODO: does the contextstack grow? DO i end them correctly??
         
 
         public static void EnableDebugging()

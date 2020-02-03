@@ -36,7 +36,7 @@ namespace STory.GameContent.Spells
         }
         public virtual void Cast(Character caster, Attackable target)
         {
-            caster.RemoveMana(this.Cost);
+            caster.RemoveMana(caster.calculateCost(this));
         }
 
         public string getText()
@@ -53,7 +53,8 @@ namespace STory.GameContent.Spells
         public virtual bool isAvailable()
         {//todo: certain spells should only be available in combat
             //todo check for items that reduce mana
-            return Player.getInstance().HasMana(this.Cost);
+            Player inst = Player.getInstance();
+            return inst.HasMana(inst.calculateCost(this));
         }
 
         public string getPreferredCommand()
